@@ -1,0 +1,641 @@
+<pre class='metadata'>
+Title: IDX Protocol (Version 0.0.1-20250128)
+Shortname: idx-protocol
+Status: LD
+Status Text: Draft Technical Specification
+ED: https://sine-fdn.github.io/idx-extension/
+Canonical URL: ED
+Editor: Martin Pompéry, https://sine.foundation, martin@sine.foundation
+Editor: Raimundo Henriques, https://sine.foundation, raimundo@sine.foundation
+Repository: sine-fdn/idx-protocol
+Abstract: This specification defines the IDX Protocol, an technical specification for reaching interoperability in the impact investments space.
+Markup Shorthands: markdown yes
+Boilerplate: omit conformance, omit copyright
+Local Boilerplate: header yes
+</pre>
+
+
+Advisement: This technical specification is a living document and is work in progress.
+
+# Introduction # {#introduction}
+
+This document defines the IDX Protocol ([[#protocol]]) and a data model ([[#data-model]]) 
+to enable the seamless and interoperable exchange ([[#business-cases]]) of opportunity data ([[#dt-opportunity]]). 
+
+It shall demonstrate that interoperability of impact investment data leads to more investments into SDG-related solutions.
+
+
+## Out of Scope ## {#out-of-scope}
+
+ISSUE: this section is still incomplete.
+
+This specification does not cover the following topics:
+
+1. KYC- or AML-related topics.
+2. Legal or other regulatory aspects of impact investments.
+3. The definition of the impact investment or the impact investments space.
+
+
+# Definitions # {#definitions}
+
+: <dfn>Host System</dfn>
+:: Software implementation conforming to this specifiction.
+
+: <dfn>Data Owner</dfn>
+:: A party that exchanges data with another party utilizing the IDX Protocol.
+
+: <dfn>Data Recipient</dfn>
+:: A party that receives or requests data from a [=data owner=] utilizing the IDX Protocol.
+
+: <dfn>Party</dfn>
+:: A [=data owner=] or a [=data recipient=].
+
+
+ISSUE: This sub-section to be completed.
+
+
+# Business Cases # {#business-cases}
+
+Note: Non-normative section
+
+## Access and Exchange of investment opportunity data ## {#business-case-1}
+
+ISSUE: Describe the business case(s)
+
+
+# Data Transactions # {#txns}
+
+ISSUE: Describe how above business case(s) are enabled through the protocol
+
+A <dfn>data transaction</dfn> is an abstraction for the exchange of data ([[#data-model]]) between two [=parties=], serving one or more business cases ([[#business-cases]]).
+
+Its function is to facilitate interoperability between different parties by explaining the context and their intention(s).
+
+Each transaction combines the IDX Data Model ([[#data-model]]) and the IDX Protocol ([[#protocol]]) to enable interoperability between [=host systems=].
+
+## Data Transaction 1: Opportunity Data Exchange ## {#txn1}
+
+ISSUE: Describe this data transaction where data owner makes opportunity data available to one or more data recipients.
+
+
+# End-to-End Example # {#example}
+
+ISSUE: Add an end-to-end example involving multiple parties
+
+
+# Data Model # {#data-model}
+
+The <dfn>IDX Data Model</dfn> consists of the data type <{Opportunity}> at this point.
+
+## Opportunity ## {#dt-opportunity}
+
+The <dfn element>Opportunity</dfn> data type contains information relating to a single investment opportunity. 
+This data type has OPTIONAL properties relating to impact investment opportunities.
+
+
+### Data Attributes ### {#sf-attributes}
+
+The <{Opportunity}> data type has the following properties:
+
+<figure id="opportunity-properties-table" dfn-type="element-attr" dfn-for="Opportunity">
+  <table class="data">
+    <thead>
+      <tr>
+        <th>Property
+        <th>Type
+        <th>Req
+        <th>Specification
+    <tbody>
+      <tr>
+        <td><dfn>companyName</dfn>
+        <td>String
+        <td>M
+        <td>
+              Name of the entity related to the opportunity.
+
+      <tr>
+        <td><dfn>email</dfn>
+        <td>String
+        <td>M
+        <td>
+              Email address to contact the entity on matters relting to this opportunity.
+
+      <tr>
+        <td><dfn>city</dfn>
+        <td>String
+        <td>M
+        <td>
+              Name of the city of the entity.
+
+      <tr>
+        <td><dfn>zipCode</dfn>
+        <td>String
+        <td>O
+        <td>
+              The OPTIONAL ZIP code, postal code, or equivalent of the entity related to this opportunity.
+
+      <tr>
+        <td><dfn>country</dfn>
+        <td>String
+        <td>M
+        <td>
+              The ISO 3166-2 alpha-2 country code. Example value referring to France:
+
+              <div class=example>`FR`</div>
+
+      <tr>
+        <td><dfn>websiteUrl</dfn>
+        <td>String
+        <td>O
+        <td>
+              The OPTIONAL URL of the company's website.
+
+              <div class=example>`https://www.my-sustainable-company.com`</div>
+
+
+      <tr>
+        <td><dfn>businessSummary</dfn>
+        <td>String
+        <td>O
+        <td>
+              The OPTIONAL free-form text describing the company.
+
+      <tr>
+        <td><dfn>fundingAsk</dfn> : Number
+        <td>String
+        <td>M
+        <td>
+              The positive amount of funding requested by the company, encoded as a String.
+
+              Example: investment ask of 1,230,000 USD is encoded as the following String value:
+              <div class=example>`1230000`</div>
+
+      <tr>
+        <td><dfn>fundingCurrency</dfn>
+        <td>String
+        <td>M
+        <td>
+              The ISO 4217 currency code relating to the <{Opportunity/fundingAsk}>.
+
+              Example value for the currency Australian dollar:
+              <div class=example>`AUD`</div>
+
+      <tr>
+        <td><dfn>sdgAlignments</dfn>
+        <td>Number[]
+        <td>O
+        <td>
+              The OPTIONAL non-empty set of SDG alignment numbers.
+
+              Each entry of the set MUST be a positive integer between `1` and `17`.
+
+              Example: SDG alignment with goals 1, 5, and 13 is encoded as the following array:
+              <div class=example>`[1, 5, 13]`</div>
+
+      <tr>
+        <td><dfn>previousInvestors</dfn> : <{PreviousInvestor}>[]
+        <td>
+        <td>O
+        <td>The OPTIONAL non-empty set (i.e. no duplicates) of previous investors relating to this company or opportunity in principle.
+
+      <tr>
+        <td><dfn>incomes</dfn> : <{Income}>[]
+        <td>
+        <td>O
+        <td>The OPTIONAL non-empty set (i.e. no duplicates) of incomes relating to this company or opportunity in principle.
+
+      <tr>
+        <td><dfn>costStructure</dfn> : <{CostStructure}>
+        <td>
+        <td>O
+        <td>The OPTIONAL cost structure relating to the entities represented by the opportunity.
+
+      <tr>
+        <td><dfn>sustainableFarmingPractices</dfn> : <{SustainableFarmingPractices}>
+        <td>
+        <td>O
+        <td>The OPTIONAL sustainable farming practices relating to the entities represented by the opportunity.
+
+    </table>
+    <figcaption>Opportunity data type properties</figcaption>
+</figure>
+
+
+
+## Additional Utility Data Types ## {#dt-utility-section}
+
+### Data Type PreviousInvestor ### {#dt-previous-investor}
+
+The <dfn element>PreviousInvestor</dfn> data type contains information relating to a previous investor to a previous investment <{Opportunity}>.
+
+The <{PreviousInvestor}> data type has the following properties:
+
+<figure id="previousinvestor-properties-table" dfn-type="element-attr" dfn-for="PreviousInvestor">
+  <table class="data">
+    <thead>
+      <tr>
+        <th>Property
+        <th>Type
+        <th>Req
+        <th>Specification
+    <tbody>
+      <tr>
+        <td><dfn>name</dfn>
+        <td>String
+        <td>M
+        <td>
+              The name of the previous investor.
+
+      <tr>
+        <td><dfn>email</dfn>
+        <td>String
+        <td>M
+        <td>
+              The email address of the previous investor.
+
+      <tr>
+        <td><dfn>investmentAmount</dfn> : Number
+        <td>String
+        <td>O
+        <td>
+              The amount invested by the previous investor encoded as a String.
+
+              See <{Opportunity/fundingAsk}> for an example of how to encode a number as a String.
+
+              If this value is defined, <{PreviousInvestor/investmentCurrency}> MUST be defined as well.
+
+      <tr>
+        <td><dfn>investmentCurrency</dfn>
+        <td>String
+        <td>O
+        <td>
+              The ISO 4217 currency code relating to the <{PreviousInvestor/investmentAmount}>.
+
+      <tr>
+        <td><dfn>investmentDate</dfn>
+        <td>String
+        <td>M
+        <td>
+              The ISO 8601 date of the previous investment. 
+
+              Each <{PreviousInvestor/investmentDate}> MUST include year, OPTIONAL followed by a dash and month and then OPTIONAL followed by a dash and day.
+
+              For the investment date being January 28, 2025, the value is:
+              <div class=example>`2025-01-28`</div>
+
+              For an investment date being January 2025, the value is:
+              <div class=example>`2025-01`</div>
+
+  </table>
+  <figcaption>PreviousInvestor data type properties</figcaption>
+</figure>  
+
+### Data Type Income ### {#dt-income}
+
+The <dfn element>Income</dfn> data type contains information relating to the income of a party directly or indirectly represented by an <{Opportunity}>.
+
+The <{Income}> data type has the following properties:
+
+<figure id="income-properties-table" dfn-type="element-attr" dfn-for="Income">
+  <table class="data">
+    <thead>
+      <tr>
+        <th>Property
+        <th>Type
+        <th>Req
+        <th>Specification
+    <tbody>
+      <tr>
+        <td><dfn>amount</dfn> : Number
+        <td>String
+        <td>M
+        <td>
+              The amount of income encoded as a String.
+
+              See <{Opportunity/fundingAsk}> for an example of how to encode a number as a String.
+
+      <tr>
+        <td><dfn>currency</dfn>
+        <td>String
+        <td>M
+        <td>
+              The ISO 4217 currency code relating to the <{Income/amount}>.
+
+
+      <tr>
+        <td><dfn>kind</dfn>
+        <td>String
+        <td>M
+        <td>
+              The kind of this income. 
+
+              Currently, <{Income/kind}> MUST equal one of following values:
+
+              : `SustainableFarming`
+              :: The income generated from sustainable farming practices.
+
+              : `CarbonCredits`
+              :: The income generated from sustainable farming practices.
+
+              : `BiodiversityCredits`
+              :: The income generated from biodiversity credits
+
+              : `Premiums`
+              :: The income generated from premiums for sustainable farming practices.
+
+              Issue: This property is yet critically underdefined for all of above items of the enumeration.
+
+      <tr>
+        <td><dfn>date</dfn>
+        <td>String
+        <td>M
+        <td>
+              The ISO 8601 date of the income. 
+
+              Each <{Income/date}> MUST include year, OPTIONAL followed by a dash and month and then OPTIONAL followed by a dash and day.
+
+              Yearly resolution is RECOMMENDED.
+
+              See <{PreviousInvestor/investmentDate}> for encoding examples.
+
+  </table>
+  <figcaption>Income data type properties</figcaption>
+</figure>  
+
+
+### Data Type Cost Structure ### {#dt-cost-structure}
+
+The <dfn element>CostStructure</dfn> data type contains information relating to the cost structure of the party directly or the parties indirectly represented by an <{Opportunity}>.
+
+The <{CostStructure}> data type has the following properties:
+
+<figure id="coststructure-properties-table" dfn-type="element-attr" dfn-for="CostStructure">
+  <table class="data">
+    <thead>
+      <tr>
+        <th>Property
+        <th>Type
+        <th>Req
+        <th>Specification
+    <tbody>
+      <tr>
+        <td><dfn>currency</dfn>
+        <td>String
+        <td>M
+        <td>
+              The ISO 4217 currency code relating to the costs disclosed in the <{CostStructure}>.
+
+      <tr>
+        <td><dfn>totalCosts</dfn> : Number
+        <td>String
+        <td>O
+        <td>
+              The total costs incurred by the party or parties encoded as a String. 
+              
+              If defined, the the total costs CAN be bigger than the sum of the other cost fields.
+
+      <tr>
+        <td><dfn>productionCosts</dfn> : Number
+        <td>String
+        <td>O
+        <td>
+              The total production costs encoded as a String.
+
+      <tr>
+        <td><dfn>laborCosts</dfn> : Number
+        <td>String
+        <td>O
+        <td>
+              The total labor and labor sourcing costs encoded as a String.
+
+
+      <tr>
+        <td><dfn>inputCosts</dfn> : Number
+        <td>String
+        <td>O
+        <td>
+              The total input costs encoded as a String. Example categories of input costs include seeds, fertilizers, chemicals, etc.
+
+
+      <tr>
+        <td><dfn>operatingCosts</dfn> : Number
+        <td>String
+        <td>O
+        <td>
+              The total operating costs encoded as a String. Example categories of operatings costs include cost of water, land, equipment running costs, etc.
+
+  </table>
+  <figcaption>CostStructure data type properties</figcaption>
+</figure>  
+
+
+
+### Data Type SustainableFarmingPractices ### {#dt-sfp} 
+
+The <dfn element>SustainableFarmingPractices</dfn> data type contains information relating to the sustainable farming practices 
+of the party directly or the parties indirectly represented by an <{Opportunity}>.
+
+The <{SustainableFarmingPractices}> data type has the following properties:
+
+<figure id="sustainablefarmingpractices-properties-table" dfn-type="element-attr" dfn-for="SustainableFarmingPractices">
+  <table class="data">
+    <thead>
+      <tr>
+        <th>Property
+        <th>Type
+        <th>Req
+        <th>Specification
+    <tbody>
+      <tr>
+        <td><dfn>soilManagement</dfn>
+        <td>String[]
+        <td>O
+        <td>
+              The OPTIONAL non-empty set of soil management practices relating to the <{Opportunity}>. 
+
+              Each entry of the set MUST be one of the following values:
+
+              : `CoverCrops`
+              :: 
+                  Practices related to cover crops, green manure integration, living mulch systems, etc.
+              : `WeedManagement`
+              :: 
+                  Practices related to integrated weed biocontrol, mechanical weed suppression, 
+                  ecological weed management systems, etc.
+              : `SoilFertility`
+              :: 
+                  Practices related to soil fertility, building fertility in depth
+              : `HumusOptimization`
+              :: 
+                  Practices related to carbon sequestration, optimizing the humus content in the soil, 
+                  biomess incorporation systems, etc.
+
+              Note: above list is incomplete and is subject to change and additions in subsequent versions.
+              
+              Note: This category is not mutuallly exclusive with other properies of <{SustainableFarmingPractices}>
+                     such as <{SustainableFarmingPractices/biodiversityPractices}>.
+
+      <tr>
+        <td><dfn>biodiversityPractices</dfn>
+        <td>String[]
+        <td>O
+        <td>
+              The OPTIONAL non-empty set of biodiversity practices relating to the <{Opportunity}>. 
+
+              Each entry of the set MUST be one of the following values:
+
+              : `EfficientAgrochemicalsUse`
+              :: The practice of using agrochemicals efficiently and in a targeted manner.
+                  
+              : `PreservationAreas`
+              :: The practice of creating and maintaining connected wildlife passages and buffer zones 
+                  between agricultural areas.
+
+              : `Polyculture`
+              :: The practice of intercropping, succession planting, forest gardening systems, etc.
+
+              Note: above list is incomplete and is subject to change and additions in subsequent versions.              
+
+      <tr>
+        <td><dfn>waterManagement</dfn>
+        <td>String[]
+        <td>O
+        <td>
+              The OPTIONAL non-empty set of water management practices relating to the <{Opportunity}>. 
+
+              Each entry of the set MUST be one of the following values:
+
+              : `SoilWaterConservation`
+              :: 
+                  The practice of maximize water retention in the soil and reducing evaporation. 
+                  This practice also includes the use of mulching, terracing, 
+                  cover cropping (see <{SustainableFarmingPractices/soilManagement}>), etc.
+
+              : `RainwaterHarvesting`
+              :: The practice of collecting and storing rainwater for irrigation and other uses.
+                  
+              : `PrecisionIrrigation`
+              :: 
+                  The practice of efficient irrigation technologies and scheduling based on actual crop water needs. 
+                  This includes drip irrigation among other techniques.
+
+              : `WaterReuse`
+              :: 
+                  The practice of reusing water for irrigation and other uses.
+
+              : `WaterQualityManagement`
+              :: 
+                  Practices to prevent water contamination and to maintain water quality, 
+                  such as buffer strips along waterways, proper nutrient management, 
+                  integrated pest management, etc.
+
+              Note: above list is incomplete and is subject to change and additions in subsequent versions.                          
+
+  </table>
+  <figcaption>SustainableFarmingPractices data type properties</figcaption>
+</figure>  
+
+
+
+
+# IDX Protocol # {#protocol}
+
+ISSUE: This section will be populated after the first draft of the data model is completed.
+
+## Action OpportunityExchange ## {#action-oppex}
+
+Lists the [=data owner=]'s <{Opportunity}> data incrementally (see [[#pagination]]).
+
+A [=Host system=] SHOULD implement an access management system to return only the <{Opportunity}> data intended for the requesting [=data recipient=].
+
+
+### Pagination ### {#pagination}
+
+ISSUE: Define pagination
+
+### Request Syntax ### {#action-tad-request}
+
+<pre highlight=http>
+GET <l>[=Subpath=]</l>/1/opportunities?<l>[=Limit=]</l> HTTP/1.1
+host: <l>[=Hostname=]</l>
+authorization: Bearer <l>[=BearerToken=]</l>
+</pre>
+
+: <dfn>Subpath</dfn>
+:: If a host system uses a relative subpath, then the requesting data recipient MUST prepend this subpath.
+
+: <dfn>Hostname</dfn>
+:: The requesting data recipient MUST use the domain name of the host system.
+
+: <dfn>BearerToken</dfn>
+:: 
+    TODO
+
+: <dfn>Limit</dfn>
+::
+    `Limit` is an OPTIONAL request parameter. If defined,
+      1. the name of the HTTP request parameter MUST be `limit`
+      2. and the value MUST be a positive integer.
+
+### Response Syntax ### {#action-tad-response}
+
+Response without a `link` header:
+
+<pre highlight=http>
+HTTP/1.1 <l>[=StatusCode=]</l> <l>[=StatusText=]</l>
+content-type: application/json
+content-length: <l>[=ContentLength=]</l>
+
+<l>[=ResponseBody=]</l>
+</pre>
+
+
+Paginated response with a `link` header:
+
+<pre highlight=http>
+HTTP/1.1 <l>[=StatusCode=]</l> <l>[=StatusText=]</l>
+content-type: application/json
+content-length: <l>[=ContentLength=]</l>
+link: <l>[=PaginationLink=]</l>; rel="next"
+
+<l>[=ResponseBody=]</l>
+</pre>
+
+
+
+With response parameters
+
+: <dfn>StatusCode</dfn>
+::
+    If the host system returns opportunity data, the `HttpStatusCode` MUST be 200.
+
+    ISSUE: define how the host system responds with an error response
+
+: <dfn>StatusText</dfn>
+::
+    The HTTP Status text conforming to the HTTP status code [=StatusCode=].
+
+: <dfn>ResponseBody</dfn>
+::
+    If the host system accepts the [=BearerToken=], the body MUST be a JSON object with property `data` with value a JSON array of <{Opportunity|Opportunities}>.
+
+    ISSUE: define how the host system responds with an error response
+
+: <dfn>ContentLength</dfn>
+:: The length of the Body. See [[!rfc9112]].
+
+: <dfn>PaginationLink</dfn>
+:: 
+    Issue: define me
+
+
+# Appendix A: Changelog # {#changelog}
+
+## Version 0.0.1 (2025-01-28) ## {#version-0-0-1}
+
+Summary: Initial release of the specification.
+
+
+# Appendix B: Conformance Testing # {#conformance-testing}
+
+ISSUE: Define how conformance testing is done.
