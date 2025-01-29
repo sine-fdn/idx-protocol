@@ -50,6 +50,10 @@ This specification does not cover the following topics:
 : <dfn>Party</dfn>
 :: A [=data owner=] or a [=data recipient=].
 
+: <dfn>OpenId Provider Configuration Document</dfn>
+:: A `OpenId Provider Configuration Document` document provided in accordance with [[!OPENID-CONNECT]] Section 4.
+
+
 
 ISSUE: This sub-section to be completed.
 
@@ -542,6 +546,106 @@ The <{SustainableFarmingPractices}> data type has the following properties:
 
 ISSUE: This section will be populated after the first draft of the data model is completed.
 
+## Authentication Flow ## {#auth-flow}
+
+A [=host system=] requires a [=data recipient=] to first authenticate before successfully calling
+the Action OpportunityExchange.
+
+The authentication flow consists of two steps:
+1. [[#auth-discovery|Discovery]] of the host system's authentication endpoint (if it is not already known).
+2. [[#action-auth|Action Authenticate]].
+
+### AuthEndpoint Discovery ### {#auth-discovery}
+
+A [=host system=] MUST make its [=AuthEndpoint=] discoverable by providing an [=OpenId Provider
+Configuration Document=], as specified in [[!OPENID-CONNECT]]. The value of the `token_endpoint`
+property MUST be the host system's `AuthEndpoint`, to be used in [[#action-auth]].
+
+In order to discover the host system's `AuthEndpoint`, the [=data recipient=] MUST perform
+a `GET` request to the host system's `/.well-known/openid-configuration` endpoint and retrieve the
+value of `token_endpoint`.
+
+### Action Authenticate ### {#action-auth}
+
+Request an access token using client credentials.
+
+[=Host systems=] MUST implement this action in conformance with [[!rfc6749]] Section 4.4 (OAuth2
+Client Credentials).
+
+[=Host systems=] MAY offer this action under any [=AuthEndpoint=], provided that they make it
+discoverable as specified in [[#auth-discovery]].
+
+#### Request Syntax #### {#action-auth-request}
+
+<pre highlight=http>
+  POST <l>[=AuthEndpoint=]</l> HTTP/1.1
+  accept: application/json
+  content-type: application/x-www-form-urlencoded
+  authorization: Basic <l>[=BasicAuth=]</l>
+  content-length: <l>[=ContentLength=]</l>
+  <l>[=AuthBody=]</l>
+</pre>
+
+With Request parameters:
+
+: <dfn>AuthEndpoint</dfn>
+:: The endpoint to request an [=access token=] after discovering the value through [[#auth-discovery]].
+
+: <dfn>BasicAuth</dfn>
+:: See [[!rfc6749]] Section 4.4.2
+
+: <dfn>AuthBody</dfn>
+:: See [[!rfc6749]] Section 4.4
+
+: <dfn>ContentLength</dfn>
+:: The length of the Body. See [[!rfc9112]].
+
+#### Response Syntax #### {#action-auth-response}
+
+<pre highlight=http>
+  HTTP/1.1 <l>[=AuthStatusCode=]</l> OK
+  content-type: application/json
+  content-length: <l>[=ContentLength=]</l>
+
+  <l>[=AuthResponseBody=]</l>
+</pre>
+
+**Example Successful Response**
+<div class=example>
+  <pre highlight=json>
+    {
+      "access_token": "...",
+      "token_type": "bearer"
+    }
+  </pre>
+</div>
+
+**Example Error Response (Invalid Client)**
+
+<div class=example>
+  <pre highlight=http>
+    HTTP/1.1 400 Bad Request
+    date: Wed, 29 Jan 2025 19:33:16 GMT
+    content-type: application/json
+  </pre>
+  <pre highlight=json>
+    {
+      "error": "invalid_client",
+      "error_description": "Authentication failed"
+    }
+  </pre>
+</div>
+
+With action-specific response parameters
+
+: <dfn>AuthStatusCode</dfn>
+:: A HTTP response code conforming to [[!rfc6749]] Section 4.4 and Section 5.
+
+: <dfn>AuthResponseBody</dfn>
+:: A JSON Object conforming to either [[!rfc6749]] Section 4.4 in case
+    of successful authentication (containing an <dfn>access token</dfn>), or [[!rfc6749]] Section
+    5.2 otherwise.
+
 ## Action OpportunityExchange ## {#action-oppex}
 
 Lists the [=data owner=]'s <{Opportunity}> data incrementally (see [[#pagination]]).
@@ -569,7 +673,7 @@ authorization: Bearer <l>[=BearerToken=]</l>
 
 : <dfn>BearerToken</dfn>
 ::
-    TODO
+    Issue: TODO
 
 : <dfn>Limit</dfn>
 ::
@@ -621,9 +725,6 @@ With response parameters
 
     ISSUE: define how the host system responds with an error response
 
-: <dfn>ContentLength</dfn>
-:: The length of the Body. See [[!rfc9112]].
-
 : <dfn>PaginationLink</dfn>
 ::
     Issue: define me
@@ -639,3 +740,13 @@ Summary: Initial release of the specification.
 # Appendix B: Conformance Testing # {#conformance-testing}
 
 ISSUE: Define how conformance testing is done.
+
+<pre class=biblio>
+{
+    "OPENID-CONNECT": {
+    "authors": [],
+    "href": "https://openid.net/specs/openid-connect-discovery-1_0.html",
+    "title": "OpenID Connect Discovery 1.0 incorporating errata set 1"
+  }
+}
+</pre>
