@@ -610,32 +610,6 @@ With Request parameters:
   <l>[=AuthResponseBody=]</l>
 </pre>
 
-**Example Successful Response**
-<div class=example>
-  <pre highlight=json>
-    {
-      "access_token": "...",
-      "token_type": "bearer"
-    }
-  </pre>
-</div>
-
-**Example Error Response (Invalid Client)**
-
-<div class=example>
-  <pre highlight=http>
-    HTTP/1.1 400 Bad Request
-    date: Wed, 29 Jan 2025 19:33:16 GMT
-    content-type: application/json
-  </pre>
-  <pre highlight=json>
-    {
-      "error": "invalid_client",
-      "error_description": "Authentication failed"
-    }
-  </pre>
-</div>
-
 With action-specific response parameters
 
 : <dfn>AuthStatusCode</dfn>
@@ -729,6 +703,114 @@ With response parameters
 ::
     Issue: define me
 
+## Examples ## {#examples}
+
+### Example Action Authenticate request and response ### {#example-auth}
+
+**Example Request**
+
+<div class=example>
+  <pre highlight=http>
+    POST /auth HTTP/1.1
+    accept: application/json
+    content-type: application/x-www-form-urlencoded
+    authorization: Basic [base64(client_id:client_secret)]
+    grant-type: client_credentials
+  </pre>
+</div>
+
+**Example Successful Response**
+<div class=example>
+  <pre highlight=json>
+    {
+      "access_token": "...",
+      "token_type": "bearer"
+    }
+  </pre>
+</div>
+
+**Example Error Response (Invalid Client)**
+
+<div class=example>
+  <pre highlight=http>
+    HTTP/1.1 400 Bad Request
+    date: Wed, 29 Jan 2025 19:33:16 GMT
+    content-type: application/json
+  </pre>
+  <pre highlight=json>
+    {
+      "error": "invalid_client",
+      "error_description": "Authentication failed"
+    }
+  </pre>
+</div>
+
+### Example Action OpportunityExchange request and response ### {#example-oppex}
+
+**Example Request**
+
+<div class=example>
+  <pre highlight=http>
+    GET /1/opportunities?limit=1 HTTP/1.1
+    host: example.com
+    authorization: Bearer [access_token]
+  </pre>
+</div>
+
+**Example Successful Response**
+
+<div class=example>
+  Example header:
+  <pre highlight=http>
+    HTTP/1.1 200 OK
+    content-type: application/json
+    content-length: 661
+    server: example-server
+    link: &lt;https://api.example./1/opportunities?limit=1&amp;offset=1&gt;; rel="next"
+  </pre>
+
+  Example body:
+  <pre highlight=json>
+    {
+      "data": [
+        {
+          "companyName": "Example Company",
+          "email": "example@company.com",
+          "city": "Berlin",
+          "country": "DE",
+          "websiteUrl": "https://example.com",
+          "businessSummary": "Example business summary",
+          "fundingAsk": "1230000",
+          "fundingCurrency": "EUR",
+          "previousInvestors": [
+            {
+              "name": "Example Investor",
+              "email": "example@investor.com",
+              "investmentDate": "2025-01-28"
+            }
+          ],
+          "incomes": [
+            {
+              "amount": "1230000",
+              "currency": "EUR",
+              "kind": "SustainableFarming",
+              "date": "2025-01-28"
+            }
+          ],
+          "costStructure": {
+            "currency": "EUR",
+            "totalCosts": "1230000",
+          },
+          "sustainableFarmingPractices": {
+            "soilManagement": ["CoverCrops"],
+            "biodiversityPractices": ["EfficientAgrochemicalsUse"],
+            "waterManagement": ["SoilWaterConservation"]
+          }
+        }
+      ]
+    }
+  </pre>
+</div>
 
 # Appendix A: Changelog # {#changelog}
 
