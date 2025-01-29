@@ -8,7 +8,7 @@ Canonical URL: ED
 Editor: Martin Pompéry, https://sine.foundation, martin@sine.foundation
 Editor: Raimundo Henriques, https://sine.foundation, raimundo@sine.foundation
 Repository: sine-fdn/idx-protocol
-Abstract: This specification defines the IDX Protocol, an technical specification for reaching interoperability in the impact investments space.
+Abstract: This specification defines the IDX Protocol, a technical specification for reaching interoperability in the impact investments space.
 Markup Shorthands: markdown yes
 Boilerplate: omit conformance, omit copyright
 Local Boilerplate: header yes
@@ -19,8 +19,8 @@ Advisement: This technical specification is a living document and is work in pro
 
 # Introduction # {#introduction}
 
-This document defines the IDX Protocol ([[#protocol]]) and a data model ([[#data-model]]) 
-to enable the seamless and interoperable exchange ([[#business-cases]]) of opportunity data ([[#dt-opportunity]]). 
+This document defines the IDX Protocol ([[#protocol]]) and a data model ([[#data-model]])
+to enable the seamless and interoperable exchange ([[#business-cases]]) of opportunity data ([[#dt-opportunity]]).
 
 It shall demonstrate that interoperability of impact investment data leads to more investments into SDG-related solutions.
 
@@ -89,7 +89,7 @@ The <dfn>IDX Data Model</dfn> consists of the data type <{Opportunity}> at this 
 
 ## Opportunity ## {#dt-opportunity}
 
-The <dfn element>Opportunity</dfn> data type contains information relating to a single investment opportunity. 
+The <dfn element>Opportunity</dfn> data type contains information relating to a single investment opportunity.
 This data type has OPTIONAL properties relating to impact investment opportunities.
 
 
@@ -196,13 +196,13 @@ The <{Opportunity}> data type has the following properties:
         <td><dfn>previousInvestors</dfn> : <{PreviousInvestor}>[]
         <td>
         <td>O
-        <td>The OPTIONAL non-empty set (i.e. no duplicates) of previous investors relating to this company or opportunity in principle.
+        <td>The OPTIONAL non-empty set of unique (i.e. no duplicates) previous investors relating to this company or opportunity in principle.
 
       <tr>
         <td><dfn>incomes</dfn> : <{Income}>[]
         <td>
         <td>O
-        <td>The OPTIONAL non-empty set (i.e. no duplicates) of incomes relating to this company or opportunity in principle.
+        <td>The OPTIONAL non-empty set of unique (i.e. no duplicates) incomes relating to this company or opportunity in principle.
 
       <tr>
         <td><dfn>costStructure</dfn> : <{CostStructure}>
@@ -276,9 +276,9 @@ The <{PreviousInvestor}> data type has the following properties:
         <td>String
         <td>M
         <td>
-              The ISO 8601 date of the previous investment. 
+              The ISO 8601 date of the previous investment.
 
-              Each <{PreviousInvestor/investmentDate}> MUST include year, OPTIONAL followed by a dash and month and then OPTIONAL followed by a dash and day.
+              Each <{PreviousInvestor/investmentDate}> MUST include year, OPTIONALLY followed by a dash and month and then OPTIONALLY followed by a dash and day.
 
               For the investment date being January 28, 2025, the value is:
               <div class=example>`2025-01-28`</div>
@@ -288,7 +288,7 @@ The <{PreviousInvestor}> data type has the following properties:
 
   </table>
   <figcaption>PreviousInvestor data type properties</figcaption>
-</figure>  
+</figure>
 
 ### Data Type Income ### {#dt-income}
 
@@ -327,7 +327,7 @@ The <{Income}> data type has the following properties:
         <td>String
         <td>M
         <td>
-              The kind of this income. 
+              The kind of this income.
 
               Currently, <{Income/kind}> MUST equal one of following values:
 
@@ -350,9 +350,9 @@ The <{Income}> data type has the following properties:
         <td>String
         <td>M
         <td>
-              The ISO 8601 date of the income. 
+              The ISO 8601 date of the income.
 
-              Each <{Income/date}> MUST include year, OPTIONAL followed by a dash and month and then OPTIONAL followed by a dash and day.
+              Each <{Income/date}> MUST include year, OPTIONALLY followed by a dash and month and then OPTIONALLY followed by a dash and day.
 
               Yearly resolution is RECOMMENDED.
 
@@ -360,7 +360,7 @@ The <{Income}> data type has the following properties:
 
   </table>
   <figcaption>Income data type properties</figcaption>
-</figure>  
+</figure>
 
 
 ### Data Type Cost Structure ### {#dt-cost-structure}
@@ -390,8 +390,8 @@ The <{CostStructure}> data type has the following properties:
         <td>String
         <td>O
         <td>
-              The total costs incurred by the party or parties encoded as a String. 
-              
+              The total costs incurred by the party or parties encoded as a String.
+
               If defined, the the total costs CAN be bigger than the sum of the other cost fields.
 
       <tr>
@@ -426,13 +426,13 @@ The <{CostStructure}> data type has the following properties:
 
   </table>
   <figcaption>CostStructure data type properties</figcaption>
-</figure>  
+</figure>
 
 
 
-### Data Type SustainableFarmingPractices ### {#dt-sfp} 
+### Data Type SustainableFarmingPractices ### {#dt-sfp}
 
-The <dfn element>SustainableFarmingPractices</dfn> data type contains information relating to the sustainable farming practices 
+The <dfn element>SustainableFarmingPractices</dfn> data type contains information relating to the sustainable farming practices
 of the party directly or the parties indirectly represented by an <{Opportunity}>.
 
 The <{SustainableFarmingPractices}> data type has the following properties:
@@ -451,27 +451,27 @@ The <{SustainableFarmingPractices}> data type has the following properties:
         <td>String[]
         <td>O
         <td>
-              The OPTIONAL non-empty set of soil management practices relating to the <{Opportunity}>. 
+              The OPTIONAL non-empty set of soil management practices relating to the <{Opportunity}>.
 
               Each entry of the set MUST be one of the following values:
 
               : `CoverCrops`
-              :: 
+              ::
                   Practices related to cover crops, green manure integration, living mulch systems, etc.
               : `WeedManagement`
-              :: 
-                  Practices related to integrated weed biocontrol, mechanical weed suppression, 
+              ::
+                  Practices related to integrated weed biocontrol, mechanical weed suppression,
                   ecological weed management systems, etc.
               : `SoilFertility`
-              :: 
+              ::
                   Practices related to soil fertility, building fertility in depth
               : `HumusOptimization`
-              :: 
-                  Practices related to carbon sequestration, optimizing the humus content in the soil, 
+              ::
+                  Practices related to carbon sequestration, optimizing the humus content in the soil,
                   biomess incorporation systems, etc.
 
-              Note: above list is incomplete and is subject to change and additions in subsequent versions.
-              
+              Advisement: above list is incomplete and is subject to change and additions in subsequent versions.
+
               Note: This category is not mutuallly exclusive with other properies of <{SustainableFarmingPractices}>
                      such as <{SustainableFarmingPractices/biodiversityPractices}>.
 
@@ -480,60 +480,60 @@ The <{SustainableFarmingPractices}> data type has the following properties:
         <td>String[]
         <td>O
         <td>
-              The OPTIONAL non-empty set of biodiversity practices relating to the <{Opportunity}>. 
+              The OPTIONAL non-empty set of biodiversity practices relating to the <{Opportunity}>.
 
               Each entry of the set MUST be one of the following values:
 
               : `EfficientAgrochemicalsUse`
               :: The practice of using agrochemicals efficiently and in a targeted manner.
-                  
+
               : `PreservationAreas`
-              :: The practice of creating and maintaining connected wildlife passages and buffer zones 
+              :: The practice of creating and maintaining connected wildlife passages and buffer zones
                   between agricultural areas.
 
               : `Polyculture`
               :: The practice of intercropping, succession planting, forest gardening systems, etc.
 
-              Note: above list is incomplete and is subject to change and additions in subsequent versions.              
+              Advisement: above list is incomplete and is subject to change and additions in subsequent versions.
 
       <tr>
         <td><dfn>waterManagement</dfn>
         <td>String[]
         <td>O
         <td>
-              The OPTIONAL non-empty set of water management practices relating to the <{Opportunity}>. 
+              The OPTIONAL non-empty set of water management practices relating to the <{Opportunity}>.
 
               Each entry of the set MUST be one of the following values:
 
               : `SoilWaterConservation`
-              :: 
-                  The practice of maximize water retention in the soil and reducing evaporation. 
-                  This practice also includes the use of mulching, terracing, 
+              ::
+                  The practice of maximize water retention in the soil and reducing evaporation.
+                  This practice also includes the use of mulching, terracing,
                   cover cropping (see <{SustainableFarmingPractices/soilManagement}>), etc.
 
               : `RainwaterHarvesting`
               :: The practice of collecting and storing rainwater for irrigation and other uses.
-                  
+
               : `PrecisionIrrigation`
-              :: 
-                  The practice of efficient irrigation technologies and scheduling based on actual crop water needs. 
+              ::
+                  The practice of efficient irrigation technologies and scheduling based on actual crop water needs.
                   This includes drip irrigation among other techniques.
 
               : `WaterReuse`
-              :: 
+              ::
                   The practice of reusing water for irrigation and other uses.
 
               : `WaterQualityManagement`
-              :: 
-                  Practices to prevent water contamination and to maintain water quality, 
-                  such as buffer strips along waterways, proper nutrient management, 
+              ::
+                  Practices to prevent water contamination and to maintain water quality,
+                  such as buffer strips along waterways, proper nutrient management,
                   integrated pest management, etc.
 
-              Note: above list is incomplete and is subject to change and additions in subsequent versions.                          
+              Advisement: above list is incomplete and is subject to change and additions in subsequent versions.
 
   </table>
   <figcaption>SustainableFarmingPractices data type properties</figcaption>
-</figure>  
+</figure>
 
 
 
@@ -568,7 +568,7 @@ authorization: Bearer <l>[=BearerToken=]</l>
 :: The requesting data recipient MUST use the domain name of the host system.
 
 : <dfn>BearerToken</dfn>
-:: 
+::
     TODO
 
 : <dfn>Limit</dfn>
@@ -625,7 +625,7 @@ With response parameters
 :: The length of the Body. See [[!rfc9112]].
 
 : <dfn>PaginationLink</dfn>
-:: 
+::
     Issue: define me
 
 
