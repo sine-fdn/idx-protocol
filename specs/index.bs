@@ -628,7 +628,37 @@ A [=Host system=] SHOULD implement an access management system to return only th
 
 ### Pagination ### {#pagination}
 
-ISSUE: Define pagination
+[=Host systems=] MUST implement pagination server-side such that
+
+1. The host system MAY return less <{Opportunity|Opportunities}> than requested through the
+    [=Limit=] request parameter
+2. The host system MUST return a `Link` header if there are additional <{Opportunity|Opportunities}>
+    ready to be retrieved, such that
+   1. The `Link` header conforms to [[!rfc8288]]
+   2. The value of the `rel` parameter is equal to `next`
+   3. the target IRI (RFC8288, Section 3.1) of the `Link` header is absolute
+   4. The value of `host` of the target IRI is equal to the value of the `host` request header from
+      the original `OpportunityExchange` HTTP request
+
+The target IRI from a pagination `link` header is called a <dfn>pagination link</dfn>.
+
+Upon a [=host system=] returning a [=pagination link=]
+
+1. a data recipient CAN call the pagination link more than once
+2. upon each call, the host system
+    1. MUST return the same set of <{Opportunity|Opportunities}> upon successful authentication
+        (i.e. [=BearerToken=] authentication)
+    2. MUST NOT return more <{Opportunity|Opportunities}> than requested in case [=Limit=] was
+        defined by a [=data recipient=]
+    3. MUST return a `Link` header conforming with the previous description in case additional
+        <{Opportunity|Opportunities}> are available
+3. If a response contains a second pagination link, upon calling the second pagination link, the
+    previous pagination link MAY no longer work
+    - i.e. data recipients MUST NOT assume that previous pagination links continue to return results
+        after advancing in the pagination process
+4. a pagination link MUST be valid for at least 180 seconds after creation
+5. a data recipient SHOULD retry calling the pagination link after the server returned an error
+   1. and SHOULD use a randomized exponential back-off strategy when retrying
 
 ### Request Syntax ### {#action-tad-request}
 
@@ -697,8 +727,7 @@ With response parameters
     - `message`: a human-readable error description encoded as a String.
 
 : <dfn>PaginationLink</dfn>
-::
-    Issue: define me
+:: See [=pagination link=] and [[#pagination]].
 
 ## Error Responses ## {#error-responses}
 
