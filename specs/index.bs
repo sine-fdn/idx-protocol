@@ -82,8 +82,25 @@ Each transaction combines the IDX Data Model ([[#data-model]]) and the IDX Proto
 
 ## Data Transaction 1: Opportunity Data Exchange ## {#txn1}
 
-ISSUE: Describe this data transaction where data owner makes opportunity data available to one or more data recipients.
+This data transaction enables a farmer or a cooperative (the [=data owner=]) to make <{Opportunity}>
+available to one or more investors or impact funds (the [=data recipient=](s)).
 
+This data transaction also enables an investor or impact fund (the [=data owner=]) to share an
+<{Opportunity}> with other investors or impact funds (the [=data recipient=](s)).
+
+For this,
+
+1. the data owner MUST gather the necessary data and input it into a [=host system=] that implements
+    the IDX Protocol;
+2. the host system MUST
+    1. encode this data as an <{Opportunity}> and
+    2. make it available through an HTTP API, as specified in [[#protocol]];
+    3. provide the [=data recipient=](s) with the credentials necessary for authentication;
+3. the data recipient MUST
+    1. authenticate with the host system, by following the [=Authentication Flow=];
+    2. call the [=Action OpportunityExchange=] to retrieve the <{Opportunity}> data;
+    3. in case more than one <{Opportunity}> is returned, filter by, e.g., the name of the data
+        owner.
 
 # End-to-End Example # {#example}
 
