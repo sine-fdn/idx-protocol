@@ -72,28 +72,31 @@ This specification does not cover the following topics:
 ISSUE: This sub-section to be completed.
 
 
-# Business Cases # {#business-cases}
+# Business Case and Rational # {#business-cases}
 
 Note: Non-normative section
 
-## Access and Exchange of investment opportunity data ## {#business-case-1}
+The [[#protocol|IDX Protocol]] aims to serve impact investors and investees alike by increasing the efficiency of deal sourcing.
+The IDX Protocol achieves this by enabling the exchange of investment opportunity data (see [[#txns]]). 
 
-ISSUE: Describe the business case(s)
+The interoperability enabled by the IDX Protocol supports to
+
+1. reduce the friction and cost of impact investment decision making for both investors and investees,
+2. increase the number of investments in SDG-related solutions, and
+3. increase transparency and accountability of impact investments.
 
 
 # Data Transactions # {#txns}
 
-ISSUE: Describe how above business case(s) are enabled through the protocol
+Note: Non-normative section
 
 A <dfn>data transaction</dfn> is an abstraction for the exchange of data ([[#data-model]]) between two [=parties=], serving one or more business cases ([[#business-cases]]).
 
-Its function is to facilitate interoperability between different parties by explaining the context and their intention(s).
-
-Each transaction combines the IDX Data Model ([[#data-model]]) and the IDX Protocol ([[#protocol]]) to enable interoperability between [=host systems=].
+Each transaction shall illustrate how the IDX Protocol can be utilized to address the described business cases.
 
 ## Data Transaction 1: Opportunity Data Exchange ## {#txn1}
 
-This data transaction enables a farmer or a cooperative (the [=data owner=]) to make <{Opportunity}>
+This data transaction enables an investee (such as a farmer or a cooperative) as the [=data owner=] to make <{Opportunity}>
 available to one or more investors or impact funds (the [=data recipient=](s)).
 
 This data transaction also enables an investor or impact fund (the [=data owner=]) to share an
