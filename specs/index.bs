@@ -50,6 +50,9 @@ This specification does not cover the following topics:
 : <dfn>Party</dfn>
 :: A [=data owner=] or a [=data recipient=].
 
+: <dfn>interoperable</dfn>
+:: The quality of being able to exchange data between [=host systems=] irrespective of the vendors of the host systems, without the need for translation or transformation of the data.
+
 : <dfn>OpenId Provider Configuration Document</dfn>
 :: A `OpenId Provider Configuration Document` document provided in accordance with [[!OPENID-CONNECT]] Section 4.
 
@@ -539,33 +542,52 @@ The <{SustainableFarmingPractices}> data type has the following properties:
   <figcaption>SustainableFarmingPractices data type properties</figcaption>
 </figure>
 
-
-
-
 # IDX Protocol # {#protocol}
 
-ISSUE: This section will be populated after the first draft of the data model is completed.
+<div class=note>Non-normative</div>
 
-## Authentication Flow ## {#auth-flow}
+This section defines an [[!rfc9112|HTTP]]-based API for the [=interoperable=] exchange of
+<{Opportunity}> data between [=host systems=].
+
+The scope of the HTTP API is minimal by design. Additional features will be added in future versions of this specification.
+
+Interoperable data exchange between a data owner and a data recipient can be achieved by
+
+1. the data owner offering <{Opportunity}> data through a host system that implements the IDX
+    Protocol, and
+2. the data recipient making [=Authentication Flow|authenticated calls=] to retrieve <{Opportunity}> data,
+    i.e., by calling the [=Action OpportunityExchange=].
+
+## Host system Minimum Requirements ## {#requirements}
+
+A [=host system=] MUST implement the [=Authentication Flow=] and [=Action OpportunityExchange=].
+
+A [=host system=] MUST offer its actions under https method only.
+
+A [=host system=] MUST offer all actions under the same [=Hostname=] and [=Subpath=] except for the
+[=AuthEndpoint=] returned in the `token_endpoint` of the [=OpenId Provider Configuration Document=]
+(see [=Authentication Flow=]).
+
+## <dfn>Authentication Flow</dfn> ## {#auth-flow}
 
 A [=host system=] requires a [=data recipient=] to first authenticate before successfully calling
 the Action OpportunityExchange.
 
 The authentication flow consists of two steps:
-1. [[#auth-discovery|Discovery]] of the host system's authentication endpoint (if it is not already known).
-2. [[#action-auth|Action Authenticate]].
+1. [=AuthEndpoint Discovery|Discovery=] of the host system's authentication endpoint (if it is not already known).
+2. [=Action Authenticate=].
 
-### AuthEndpoint Discovery ### {#auth-discovery}
+### <dfn>AuthEndpoint Discovery</dfn> ### {#auth-discovery}
 
 A [=host system=] MUST make its [=AuthEndpoint=] discoverable by providing an [=OpenId Provider
 Configuration Document=], as specified in [[!OPENID-CONNECT]]. The value of the `token_endpoint`
-property MUST be the host system's `AuthEndpoint`, to be used in [[#action-auth]].
+property MUST be the host system's [=AuthEndpoint=], to be used in [=Action Authenticate=].
 
-In order to discover the host system's `AuthEndpoint`, the [=data recipient=] MUST perform
-a `GET` request to the host system's `/.well-known/openid-configuration` endpoint and retrieve the
+In order to discover the host system's [=AuthEndpoint=], the [=data recipient=] MUST perform a `GET`
+request to the host system's `[Hostname]/.well-known/openid-configuration` endpoint and retrieve the
 value of `token_endpoint`.
 
-### Action Authenticate ### {#action-auth}
+### <dfn>Action Authenticate</dfn> ### {#action-auth}
 
 Request an access token using client credentials.
 
@@ -589,7 +611,7 @@ discoverable as specified in [[#auth-discovery]].
 With Request parameters:
 
 : <dfn>AuthEndpoint</dfn>
-:: The endpoint to request an [=access token=] after discovering the value through [[#auth-discovery]].
+:: The endpoint to request an [=access token=] after discovering the value through [=AuthEndpoint Discovery=].
 
 : <dfn>BasicAuth</dfn>
 :: See [[!rfc6749]] Section 4.4.2
@@ -620,7 +642,7 @@ With action-specific response parameters
     of successful authentication (containing an <dfn>access token</dfn>), or [[!rfc6749]] Section
     5.2 otherwise.
 
-## Action OpportunityExchange ## {#action-oppex}
+## <dfn>Action OpportunityExchange</dfn> ## {#action-oppex}
 
 Lists the [=data owner=]'s <{Opportunity}> data incrementally (see [[#pagination]]).
 
@@ -731,7 +753,7 @@ With response parameters
 
 ## Error Responses ## {#error-responses}
 
-Action [[#action-oppex|OpportunityExchange]] specifies general error response handling (see
+[=Action OpportunityExchange=] specifies general error response handling (see
 [=StatusCode=]). This section specifies these
 
 ## Examples ## {#examples}
