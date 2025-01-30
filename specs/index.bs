@@ -626,7 +626,6 @@ Lists the [=data owner=]'s <{Opportunity}> data incrementally (see [[#pagination
 
 A [=Host system=] SHOULD implement an access management system to return only the <{Opportunity}> data intended for the requesting [=data recipient=].
 
-
 ### Pagination ### {#pagination}
 
 ISSUE: Define pagination
@@ -660,26 +659,23 @@ authorization: Bearer <l>[=BearerToken=]</l>
 Response without a `link` header:
 
 <pre highlight=http>
-HTTP/1.1 <l>[=StatusCode=]</l> <l>[=StatusText=]</l>
-content-type: application/json
-content-length: <l>[=ContentLength=]</l>
+  HTTP/1.1 <l>[=StatusCode=]</l> <l>[=StatusText=]</l>
+  content-type: application/json
+  content-length: <l>[=ContentLength=]</l>
 
-<l>[=ResponseBody=]</l>
+  <l>[=ResponseBody=]</l>
 </pre>
-
 
 Paginated response with a `link` header:
 
 <pre highlight=http>
-HTTP/1.1 <l>[=StatusCode=]</l> <l>[=StatusText=]</l>
-content-type: application/json
-content-length: <l>[=ContentLength=]</l>
-link: <l>[=PaginationLink=]</l>; rel="next"
+  HTTP/1.1 <l>[=StatusCode=]</l> <l>[=StatusText=]</l>
+  content-type: application/json
+  content-length: <l>[=ContentLength=]</l>
+  link: <l>[=PaginationLink=]</l>; rel="next"
 
-<l>[=ResponseBody=]</l>
+  <l>[=ResponseBody=]</l>
 </pre>
-
-
 
 With response parameters
 
@@ -687,7 +683,7 @@ With response parameters
 ::
     If the host system returns opportunity data, the `HttpStatusCode` MUST be 200.
 
-    ISSUE: define how the host system responds with an error response
+    Otherwise, the host system MUST return the appropriate HTTP error code.
 
 : <dfn>StatusText</dfn>
 ::
@@ -697,11 +693,18 @@ With response parameters
 ::
     If the host system accepts the [=BearerToken=], the body MUST be a JSON object with property `data` with value a JSON array of <{Opportunity|Opportunities}>.
 
-    ISSUE: define how the host system responds with an error response
+    Otherwise, the host system MUST return an <dfn>error response</dfn> JSON object with the following properties:
+    - `code`: the error response code (corresponding to the [=StatusCode=]) encoded as a String;
+    - `message`: a human-readable error description encoded as a String.
 
 : <dfn>PaginationLink</dfn>
 ::
     Issue: define me
+
+## Error Responses ## {#error-responses}
+
+Action [[#action-oppex|OpportunityExchange]] specifies general error response handling (see
+[=StatusCode=]). This section specifies these
 
 ## Examples ## {#examples}
 
@@ -808,6 +811,22 @@ With response parameters
           }
         }
       ]
+    }
+  </pre>
+</div>
+
+**Example Error Response (Invalid Token)**
+
+<div class=example>
+  <pre highlight=http>
+    HTTP/1.1 401 Unauthorized
+    content-type: application/json
+    content-length: 29
+  </pre>
+  <pre highlight=json>
+    {
+      "code": "Unauthorized",
+      "message": "Invalid token"
     }
   </pre>
 </div>
