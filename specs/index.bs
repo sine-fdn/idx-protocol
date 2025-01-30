@@ -50,12 +50,20 @@ This specification does not cover the following topics:
 : <dfn>Party</dfn>
 :: A [=data owner=] or a [=data recipient=].
 
-: <dfn>interoperable</dfn>
+: <dfn>Interoperable</dfn>
 :: The quality of being able to exchange data between [=host systems=] irrespective of the vendors of the host systems, without the need for translation or transformation of the data.
 
 : <dfn>OpenId Provider Configuration Document</dfn>
 :: A `OpenId Provider Configuration Document` document provided in accordance with [[!OPENID-CONNECT]] Section 4.
 
+: <dfn>IDX Conformance</dfn> :: The status of being conformant to these specifications. A [=host
+    system=] is considered <dfn>IDX Conformant</dfn> if it meets the requirements specified in
+    [[#requirements]] and has successfully performed [=bilateral test|bilateral=]
+    [[#conformance-testing|conformance tests]].
+
+:<dfn>Bilateral Test</dfn>
+:: A testing process where two [=host systems=] test their implementations against each other to
+    ensure [=interoperable|interoperability=].
 
 
 ISSUE: This sub-section to be completed.
@@ -559,7 +567,7 @@ The <{SustainableFarmingPractices}> data type has the following properties:
   <figcaption>SustainableFarmingPractices data type properties</figcaption>
 </figure>
 
-# IDX Protocol # {#protocol}
+# <dfn>IDX Protocol</dfn> # {#protocol}
 
 <div class=note>Non-normative</div>
 
@@ -907,7 +915,292 @@ Summary: Initial release of the specification.
 
 # Appendix B: Conformance Testing # {#conformance-testing}
 
-ISSUE: Define how conformance testing is done.
+Advisement: This appendix is a work in progress. All feedback is welcome.
+
+In order to be considered [=IDX Conformant=], a [=host system=] MUST perform successful a
+[=bilateral tests=] with another host system.
+
+These tests are effectively two test suites, one for each host system, that may be run in parallel.
+
+The host system acting as [=data owner=] will be referred to as 'target host system'.
+
+The host system acting as [=data recipient=] will be referred to as 'testing host system'.
+
+## Test Cases ## {#test-cases}
+
+Although both [=host systems=] are tested in bilateral testing, only one of them is the target of
+the tests at each time.
+
+Bilateral testing MUST include the following tests (and MAY include additional tests):
+
+### Test Case 001: AuthEndpoint Discovery ### {#tc-001}
+
+Tests the target host system's ability to have a discoverable [=AuthEndpoint=].
+
+#### Request #### {#tc-001-request}
+
+A GET request must be sent to the target host system's `[Hostname]/.well-known/openid-configuration`
+endpoint.
+
+#### Expected Response #### {#tc-001-response}
+
+A valid [=OpenId Provider Configuration Document=] (conforming to [[!OPENID-CONNECT]] Section 4)
+MUST be returned. The value of the `token_endpoint` property MUST be a valid URL, offering [=Action
+Authenticate=].
+
+### Test Case 002: Successful Authentication ### {#tc-002}
+
+Tests the target host system's ability to [=Action Authenticate|authenticate=] a data recipient.
+
+#### Request #### {#tc-002-request}
+
+A POST request must be sent to the target host system's [=AuthEndpoint=] with valid credentials as
+per the syntax specified in [[#action-auth-request]].
+
+#### Expected Response #### {#tc-002-response}
+
+The target host system MUST respond with [=StatusCode=] `200 OK` and a JSON body containing the
+access token, as specified in [[#action-auth-response]].
+
+### Test Case 003: Authentication with Invalid Credentials ### {#tc-003}
+
+Tests the target host system's ability to handle invalid credentials during authentication.
+
+#### Request #### {#tc-003-request}
+
+A POST request must be sent to the target host system's [=AuthEndpoint=] with invalid credentials as
+per the syntax specified in [[#action-auth-request]].
+
+#### Expected Response #### {#tc-003-response}
+
+The target host system MUST respond with an error response, as specified in
+[[#action-auth-response]].
+
+The [=StatusCode=] SHOULD be `401 Unauthorized` and the `code` property SHOULD be `Unauthorized`. The
+`message` property CAN be any human-readable error message (e.g., "Invalid credentials").
+
+### Test Case 004: Malformed Authentication Request ### {#tc-004}
+
+Tests the target host system's ability to handle malformed authentication requests.
+
+#### Request #### {#tc-004-request}
+
+A POST request must be sent to the target host system's [=AuthEndpoint=] with a malformed request
+(e.g., missing `grant-type`).
+
+#### Expected Response #### {#tc-004-response}
+
+The target host system MUST respond with an error response, as specified in
+[[#action-auth-response]].
+
+The [=StatusCode=] SHOULD be `400 BadRequest` and the `code` property SHOULD be `BadRequest`. The
+`message` property CAN be any human-readable error message (e.g., "Malformed request").
+
+### Test Case 005: Action OpportunityExchange without Limit ### {#tc-005}
+
+Tests the target host system's ability to return <{Opportunity}> data without a [=Limit=].
+
+#### Request #### {#tc-005-request}
+
+A GET request must be sent to the target host system's `[Subpath]/1/opportunities` endpoint without
+a `limit` parameter.
+
+#### Expected Response #### {#tc-005-response}
+
+The target host system MUST respond with [=StatusCode=] `200 OK` and a valid JSON body containing
+the <{Opportunity}> data, as specified in [[#action-tad-response]]. The `Link` header MAY be
+present.
+
+### Test Case 006: Action OpportunityExchange Pagination ### {#tc-006}
+
+Tests the target host system's ability to paginate <{Opportunity}> data.
+
+#### Request #### {#tc-006-request}
+
+A GET request must be sent to the target host system's `[Subpath]/1/opportunities` endpoint with a
+`limit` parameter, requesting less <{Opportunity}> data than available.
+
+#### Expected Response #### {#tc-006-response}
+
+The target host system MUST respond with [=StatusCode=] `200 OK` and a valid JSON body containing a
+subset of the <{Opportunity}> data available, as specified in [[#action-tad-response]]. The `Link`
+header MUST be present and conform to the pagination rules specified in [[#pagination]].
+
+Upon calling the pagination link, the target host system MUST return the next subset of the
+<{Opportunity}> data available. Upon calling the same link again, the target host system MUST return
+the same subset of <{Opportunity}> data.
+
+### Test Case 007: Action OpportunityExchange with Malformed Limit ### {#tc-007}
+
+Tests the target host system's ability to handle a malformed `limit` parameter.
+
+#### Request #### {#tc-007-request}
+
+A GET request must be sent to the target host system's `[Subpath]/1/opportunities` endpoint with a
+malformed `limit` parameter (e.g., the value is not a positive integer or `limit` is misspelled).
+
+#### Expected Response #### {#tc-007-response}
+
+The target host system MUST respond with an error response, as specified in
+[[#action-tad-response]]. The [=StatusCode=] SHOULD be `400 BadRequest` and the `code` property
+SHOULD be `BadRequest`. The `message` property CAN be any human-readable error message (e.g.,
+"Malformed limit parameter").
+
+### Test Case 008: Action OpportunityExchange with Invalid Token ### {#tc-008}
+
+Tests the target host system's ability to handle an invalid access token.
+
+#### Request #### {#tc-008-request}
+
+A GET request must be sent to the target host system's `[Subpath]/1/opportunities` endpoint with an
+invalid access token.
+
+#### Expected Response #### {#tc-008-response}
+
+The target host system MUST respond with an error response, as specified in
+[[#action-tad-response]]. The [=StatusCode=] SHOULD be `401 Unauthorized` and the `code` property
+SHOULD be `Unauthorized`. The `message` property CAN be any human-readable error message (e.g.,
+"Invalid token").
+
+### Test Case 009: Action OpportunityExchange with Expired Token ### {#tc-009}
+
+Tests the target host system's ability to handle an expired access token.
+
+#### Request #### {#tc-009-request}
+
+A GET request must be sent to the target host system's `[Subpath]/1/opportunities` endpoint with an
+expired access token.
+
+#### Expected Response #### {#tc-009-response}
+
+The target host system MUST respond with an error response, as specified in
+[[#action-tad-response]]. The [=StatusCode=] SHOULD be `401 Unauthorized` and the `code` property
+SHOULD be `Unauthorized`. The `message` property CAN be any human-readable error message (e.g.,
+"Expired token").
+
+### Test Case 010: Malformed OpportunityExchange Request ### {#tc-010}
+
+Tests the target host system's ability to handle malformed requests to the `[Subpath]/1/opportunities`.
+
+#### Request #### {#tc-010-request}
+
+A GET request must be sent to the target host system's `[Subpath]/1/opportunities` endpoint with a
+malformed request (e.g., missing `authorization` header).
+
+#### Expected Response #### {#tc-010-response}
+
+The target host system MUST respond with an error response, as specified in
+[[#action-tad-response]]. The [=StatusCode=] SHOULD be `400 BadRequest` and the `code` property
+SHOULD be `BadRequest`. The `message` property CAN be any human-readable error message (e.g.,
+"Malformed request").
+
+## Test Output ## {#test-output}
+
+In order to ascertain the success of the tests, a JSON SHOULD be created after bilateral testing has
+been successfully performed, with the following properties:
+
+<figure id="test-output-table" dfn-type="element-attr" dfn-for="TestOutput">
+  <table class="data">
+    <thead>
+      <tr>
+        <th>Property
+        <th>Type
+        <th>Req
+        <th>Specification
+    <tbody>
+      <tr>
+        <td>targetHostSystem
+        <td>String
+        <td>M
+        <td>
+              The name of the target host system (i.e., the host system acting as [=data owner=]).
+
+      <tr>
+        <td>testerHostSystem
+        <td>String
+        <td>M
+        <td>
+              The name of the testing host system (i.e., the host system acting as [=data recipient=]).
+
+      <tr>
+        <td>tc001
+        <td>Boolean
+        <td>M
+        <td>
+              The result of [[#tc-001|Test Case 001]] (`true` if successful, `false` otherwise).
+
+      <tr>
+        <td>tc00w
+        <td>Boolean
+        <td>M
+        <td>
+              The result of [[#tc-002|Test Case 002]] (`true` if successful, `false` otherwise).
+
+      <tr>
+        <td>tc003
+        <td>Boolean
+        <td>M
+        <td>
+              The result of [[#tc-003|Test Case 003]] (`true` if successful, `false` otherwise).
+
+      <tr>
+        <td>tc004
+        <td>Boolean
+        <td>M
+        <td>
+              The result of [[#tc-004|Test Case 004]] (`true` if successful, `false` otherwise).
+
+      <tr>
+        <td>tc005
+        <td>Boolean
+        <td>M
+        <td>
+              The result of [[#tc-005|Test Case 005]] (`true` if successful, `false` otherwise).
+
+      <tr>
+        <td>tc006
+        <td>Boolean
+        <td>M
+        <td>
+              The result of [[#tc-006|Test Case 006]] (`true` if successful, `false` otherwise).
+
+      <tr>
+        <td>tc007
+        <td>Boolean
+        <td>M
+        <td>
+              The result of [[#tc-007|Test Case 007]] (`true` if successful, `false` otherwise).
+
+      <tr>
+        <td>tc008
+        <td>Boolean
+        <td>M
+        <td>
+              The result of [[#tc-008|Test Case 008]] (`true` if successful, `false` otherwise).
+
+      <tr>
+        <td>tc009
+        <td>Boolean
+        <td>M
+        <td>
+              The result of [[#tc-009|Test Case 009]] (`true` if successful, `false` otherwise).
+
+      <tr>
+        <td>tc010
+        <td>Boolean
+        <td>M
+        <td>
+              The result of [[#tc-010|Test Case 010]] (`true` if successful, `false` otherwise).
+
+      <tr>
+        <td>comments
+        <td>String
+        <td>O
+        <td>
+              Additional comments on the bilateral test, e.g., description of additional tests performed.
+  </table>
+  <figcaption>Test Output</figcaption>
+</figure>
 
 <pre class=biblio>
 {
