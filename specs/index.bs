@@ -59,8 +59,9 @@ This specification does not cover the following topics:
 : <dfn>AuthEndpoint</dfn>
 :: The endpoint to request an [=access token=] after discovering the value through AuthEndpoint Discovery ([[#auth-discovery]]).
 
-: <dfn>IDX Conformance</dfn> :: The status of being conformant to these specifications. A [=host
-    system=] is considered <dfn>IDX Conformant</dfn> if it meets the requirements specified in
+: <dfn>IDX Conformance</dfn> 
+:: The status of being conformant to these specifications. A [=host system=] is 
+    considered <dfn>IDX Conformant</dfn> if it meets the requirements specified in
     [[#requirements]] and has successfully performed [=bilateral test|bilateral=]
     [[#conformance-testing|conformance tests]].
 
