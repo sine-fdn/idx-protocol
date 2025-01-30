@@ -56,6 +56,9 @@ This specification does not cover the following topics:
 : <dfn>OpenId Provider Configuration Document</dfn>
 :: A `OpenId Provider Configuration Document` document provided in accordance with [[!OPENID-CONNECT]] Section 4.
 
+: <dfn>AuthEndpoint</dfn>
+:: The endpoint to request an [=access token=] after discovering the value through AuthEndpoint Discovery ([[#auth-discovery]]).
+
 : <dfn>IDX Conformance</dfn> :: The status of being conformant to these specifications. A [=host
     system=] is considered <dfn>IDX Conformant</dfn> if it meets the requirements specified in
     [[#requirements]] and has successfully performed [=bilateral test|bilateral=]
@@ -569,12 +572,10 @@ The <{SustainableFarmingPractices}> data type has the following properties:
 
 # <dfn>IDX Protocol</dfn> # {#protocol}
 
-<div class=note>Non-normative</div>
-
 This section defines an [[!rfc9112|HTTP]]-based API for the [=interoperable=] exchange of
 <{Opportunity}> data between [=host systems=].
 
-The scope of the HTTP API is minimal by design. Additional features will be added in future versions of this specification.
+Note: The scope of the HTTP API is minimal by design. Additional features will be added in future versions of this specification.
 
 Interoperable data exchange between a data owner and a data recipient can be achieved by
 
@@ -584,6 +585,8 @@ Interoperable data exchange between a data owner and a data recipient can be ach
     i.e., by calling the [=Action OpportunityExchange=].
 
 ## Host system Minimum Requirements ## {#requirements}
+
+A [=host system=] MUST offer a [=OpenId Provider Configuration Document=] as further specified in [[#auth-discovery]].
 
 A [=host system=] MUST implement the [=Authentication Flow=] and [=Action OpportunityExchange=].
 
@@ -595,32 +598,32 @@ A [=host system=] MUST offer all actions under the same [=Hostname=] and [=Subpa
 
 ## <dfn>Authentication Flow</dfn> ## {#auth-flow}
 
-A [=host system=] requires a [=data recipient=] to first authenticate before successfully calling
-the Action OpportunityExchange.
+A [=host system=] MUST require a [=data recipient=] to first authenticate before calling
+other endpoints such as [=Action OpportunityExchange=].
 
 The authentication flow consists of two steps:
-1. [=AuthEndpoint Discovery|Discovery=] of the host system's authentication endpoint (if it is not already known).
-2. [=Action Authenticate=].
+1. Discovery of the host system's authentication endpoint (see [[#auth-discovery]].
+2. Acquiring a bearer token through [=Action Authenticate=] (see [[#action-auth]]).
 
-### <dfn>AuthEndpoint Discovery</dfn> ### {#auth-discovery}
+### Authentication Endpoint Discovery ### {#auth-discovery}
 
-A [=host system=] MUST make its [=AuthEndpoint=] discoverable by providing an [=OpenId Provider
-Configuration Document=], as specified in [[!OPENID-CONNECT]]. The value of the `token_endpoint`
-property MUST be the host system's [=AuthEndpoint=], to be used in [=Action Authenticate=].
+A [=party=] discovers the value of the [=AuthEndpoint=] by 
 
-In order to discover the host system's [=AuthEndpoint=], the [=data recipient=] MUST perform a `GET`
-request to the host system's `[Hostname]/.well-known/openid-configuration` endpoint and retrieve the
-value of `token_endpoint`.
+1. performing a `GET` request to a [=host system's=] [=OpenId Provider Configuration Document=], 
+    using `[Hostname]/.well-known/openid-configuration`.
+    1. the returned document MUST define the `token_endpoint` property accordingly.
+1. using the value of `token_endpoint` as the [=AuthEndpoint=]
 
-### <dfn>Action Authenticate</dfn> ### {#action-auth}
 
-Request an access token using client credentials.
+### Action Authenticate ### {#action-auth}
 
-[=Host systems=] MUST implement this action in conformance with [[!rfc6749]] Section 4.4 (OAuth2
-Client Credentials).
+The <dfn>Action Authenticate</dfn> is an HTTP endpoint. 
+It MUST return bearer tokens using client credentials in conformance with [[!rfc6749]] Section 4.4 (OAuth2 Client Credentials).
 
-[=Host systems=] MAY offer this action under any [=AuthEndpoint=], provided that they make it
-discoverable as specified in [[#auth-discovery]].
+[=Host systems=] MAY offer this action under potentially any path and hostname, 
+provided that this is discoverable as specified in [[#auth-discovery]].
+
+See [[#example-auth]] for an example request and response.
 
 #### Request Syntax #### {#action-auth-request}
 
@@ -634,9 +637,6 @@ discoverable as specified in [[#auth-discovery]].
 </pre>
 
 With Request parameters:
-
-: <dfn>AuthEndpoint</dfn>
-:: The endpoint to request an [=access token=] after discovering the value through [=AuthEndpoint Discovery=].
 
 : <dfn>BasicAuth</dfn>
 :: See [[!rfc6749]] Section 4.4.2
@@ -722,7 +722,7 @@ authorization: Bearer <l>[=BearerToken=]</l>
 :: The requesting data recipient MUST use the domain name of the host system.
 
 : <dfn>BearerToken</dfn>
-:: As specified in [[!rfc6750]].
+:: Bearer token (see [[!rfc6750]]).
 
 : <dfn>Limit</dfn>
 ::
@@ -775,11 +775,6 @@ With response parameters
 
 : <dfn>PaginationLink</dfn>
 :: See [=pagination link=] and [[#pagination]].
-
-## Error Responses ## {#error-responses}
-
-[=Action OpportunityExchange=] specifies general error response handling (see
-[=StatusCode=]). This section specifies these
 
 ## Examples ## {#examples}
 
