@@ -220,11 +220,11 @@ The <{Opportunity}> data type has the following properties:
               <div class=example>`AUD`</div>
 
       <tr>
-        <td><dfn>fundingBeneficiary</dfn>
+        <td><dfn>fundingBeneficiaries</dfn>
         <td>String
         <td>O
         <td>
-              The OPTIONAL name of the entity that will receive the funding, if different from <{Opportunity/companyName}>.
+              The OPTIONAL free-form text describing the ultimate benificiaries of the funding, if different from the entity representing the Opportunity (identified in <{Opportunity/companyName}>).
 
       <tr>
         <td><dfn>sdgAlignments</dfn>
@@ -261,13 +261,6 @@ The <{Opportunity}> data type has the following properties:
         <td>
         <td>O
         <td>The OPTIONAL sustainable farming practices relating to the entities represented by the opportunity.
-
-      <tr>
-        <td><dfn>dataSources</dfn>
-        <td>String[]
-        <td>M
-        <td>
-              The non-empty set of sources for this <{Opportunity}>. The <{Opportunity/companyName}> MUST be at index 0. All subsequent entities making this data available MUST be listed in the order of their participation.
 
     </table>
     <figcaption>Opportunity data type properties</figcaption>
