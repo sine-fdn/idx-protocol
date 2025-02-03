@@ -34,6 +34,7 @@ This specification does not cover the following topics:
 1. KYC- or AML-related topics.
 2. Legal or other regulatory aspects of impact investments.
 3. The definition of the impact investment or the impact investments space.
+4. Data provenance and data security aspects.
 
 
 # Definitions # {#definitions}
