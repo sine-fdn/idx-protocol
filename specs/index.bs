@@ -34,6 +34,7 @@ This specification does not cover the following topics:
 1. KYC- or AML-related topics.
 2. Legal or other regulatory aspects of impact investments.
 3. The definition of the impact investment or the impact investments space.
+4. Data provenance and data security aspects.
 
 
 # Definitions # {#definitions}
@@ -59,8 +60,8 @@ This specification does not cover the following topics:
 : <dfn>AuthEndpoint</dfn>
 :: The endpoint to request an [=access token=] after discovering the value through AuthEndpoint Discovery ([[#auth-discovery]]).
 
-: <dfn>IDX Conformance</dfn> 
-:: The status of being conformant to these specifications. A [=host system=] is 
+: <dfn>IDX Conformance</dfn>
+:: The status of being conformant to these specifications. A [=host system=] is
     considered <dfn>IDX Conformant</dfn> if it meets the requirements specified in
     [[#requirements]] and has successfully performed [=bilateral test|bilateral=]
     [[#conformance-testing|conformance tests]].
@@ -78,7 +79,7 @@ ISSUE: This sub-section to be completed.
 Note: Non-normative section
 
 The [[#protocol|IDX Protocol]] aims to serve impact investors and investees alike by increasing the efficiency of deal sourcing.
-The IDX Protocol achieves this by enabling the exchange of investment opportunity data (see [[#txns]]). 
+The IDX Protocol achieves this by enabling the exchange of investment opportunity data (see [[#txns]]).
 
 The interoperability enabled by the IDX Protocol supports to
 
@@ -218,6 +219,13 @@ The <{Opportunity}> data type has the following properties:
 
               Example value for the currency Australian dollar:
               <div class=example>`AUD`</div>
+
+      <tr>
+        <td><dfn>fundingBeneficiaries</dfn>
+        <td>String
+        <td>O
+        <td>
+              The OPTIONAL free-form text describing the ultimate benificiaries of the funding, if different from the entity representing the Opportunity (identified in <{Opportunity/companyName}>).
 
       <tr>
         <td><dfn>sdgAlignments</dfn>
@@ -611,9 +619,9 @@ The authentication flow consists of two steps:
 
 ### Authentication Endpoint Discovery ### {#auth-discovery}
 
-A [=party=] discovers the value of the [=AuthEndpoint=] by 
+A [=party=] discovers the value of the [=AuthEndpoint=] by
 
-1. performing a `GET` request to a [=host system's=] [=OpenId Provider Configuration Document=], 
+1. performing a `GET` request to a [=host system's=] [=OpenId Provider Configuration Document=],
     using `[Hostname]/.well-known/openid-configuration`.
     1. the returned document MUST define the `token_endpoint` property accordingly.
 1. using the value of `token_endpoint` as the [=AuthEndpoint=]
@@ -621,10 +629,10 @@ A [=party=] discovers the value of the [=AuthEndpoint=] by
 
 ### Action Authenticate ### {#action-auth}
 
-The <dfn>Action Authenticate</dfn> is an HTTP endpoint. 
+The <dfn>Action Authenticate</dfn> is an HTTP endpoint.
 It MUST return bearer tokens using client credentials in conformance with [[!rfc6749]] Section 4.4 (OAuth2 Client Credentials).
 
-[=Host systems=] MAY offer this action under potentially any path and hostname, 
+[=Host systems=] MAY offer this action under potentially any path and hostname,
 provided that this is discoverable as specified in [[#auth-discovery]].
 
 See [[#example-auth]] for an example request and response.
