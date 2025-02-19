@@ -132,6 +132,8 @@ The <dfn>IDX Data Model</dfn> consists of the data type <{Opportunity}> at this 
 The <dfn element>Opportunity</dfn> data type contains information relating to a single investment opportunity.
 This data type has OPTIONAL properties relating to impact investment opportunities.
 
+[=Host systems=] make Opportunities available through the IDX Protocol ([[#protocol]]).
+
 
 ### Data Attributes ### {#sf-attributes}
 
@@ -146,6 +148,66 @@ The <{Opportunity}> data type has the following properties:
         <th>Req
         <th>Specification
     <tbody>
+      <tr>
+        <td><dfn>id</dfn>
+        <td>String
+        <td>M
+        <td>
+              The unique identifier of the opportunity.
+
+              It is RECOMMENDED to use UUID (version 4 or version 7 [[!rfc9562]]) as the value of this property.
+
+      <tr>
+        <td><dfn>previousIds</dfn>
+        <td>String[]
+        <td>O
+        <td>
+              The set (i.e. no duplicates) of unique identifiers of opportunities
+              that are superseeded by this opportunity, encoded as an array of string values.
+
+              See [[#opportunity-lifecycle]] for details.
+
+      <tr>
+        <td><dfn>specVersion</dfn>
+        <td>String
+        <td>M
+        <td>
+              The version of the IDX Protocol specification that the opportunity data conforms to.
+
+              The value of this property MUST be the version of the IDX Protocol specification that the opportunity data conforms to.
+
+              Example value for the version 0.0.1 of the IDX Protocol specification:
+              <div class=example>`0.0.1`</div>
+
+      <tr>
+        <td><dfn>createdAt</dfn>
+        <td>String
+        <td>M
+        <td>
+              The timestamp of the creation of the opportunity.
+
+              The value MUST be date and time string conforming to ISO 8601 with timezone UTC.
+
+              Example value for Feb 12, 2025 at 12:00:00 UTC:
+              <div class=example>`2025-02-12T12:00:00Z`</div>
+
+      <tr>
+        <td><dfn>status</dfn>
+        <td>String
+        <td>M
+        <td>
+              The status of the opportunity which must be one of the following values:
+
+              : `active`
+              :: For an opportunity that is still open for investment(s).
+
+              : `closed`
+              ::
+                  For an opportunity that is no longer active.
+                  For instance if it was updated with newer or different data,
+                  if the opportunity was fully funded, or if the opportunity was withdrawn,
+                  or other cases not yet disclosed here.
+
       <tr>
         <td><dfn>companyName</dfn>
         <td>String
@@ -267,6 +329,25 @@ The <{Opportunity}> data type has the following properties:
     <figcaption>Opportunity data type properties</figcaption>
 </figure>
 
+
+### Opportunity Lifecycle ### {#opportunity-lifecycle}
+
+[=Host systems=] SHOULD provide a mechanism to handle the lifecycle of an <{Opportunity}>, the life cycle being:
+
+1. **Creation**: An <{Opportunity}> is created by a party and enters the host system subsequently.
+2. **Update**: An <{Opportunity}> can be updated by the party that created it later on. In this case, the host system SHOULD
+    1. Mark the previous version of the <{Opportunity}> as `closed` and
+    2. Create a new <{Opportunity}> with the updated data, linking the new <{Opportunity}> to the previous one through the
+        <{Opportunity/previousIds}> property.
+3. **Closing**: An <{Opportunity}> can be closed by the party that created it. In this case, the host system SHOULD:
+    1. Mark the <{Opportunity}> as `closed` and
+    2. Update the <{Opportunity}> with the closing date.
+
+    Note:
+        Closing means does *not* imply the success in any way but that other parties should not consider the relating <{Opportunity}> (as identified by its <{Opportunity/id}>) for investment anymore.
+
+Upon each change to <{Opportunity}> data (creation, update, or closing), the
+host system SHOULD provide the new version of the <{Opportunity}> to the [=data recipient=](s) through the IDX Protocol.
 
 
 ## Additional Utility Data Types ## {#dt-utility-section}
@@ -859,6 +940,11 @@ With response parameters
     {
       "data": [
         {
+          "id": "123e4567-e89b-12d3-a456-426614174002",
+          "specVersion": "0.0.1",
+          "createdAt": "2025-01-28T12:00:00Z",
+          "status": "active",
+          "previousIds": [ "123e4567-e89b-12d3-a456-426614174000", "123e4567-e89b-12d3-a456-426614174001" ],
           "companyName": "Example Company",
           "email": "example@company.com",
           "city": "Berlin",
@@ -915,7 +1001,16 @@ With response parameters
 
 # Appendix A: Changelog # {#changelog}
 
-## Version 0.0.1 (2025-01-28) ## {#version-0-0-1}
+## Version 0.0.1-20250128 (2025-01-28) ## {#version-0-0-1}
+
+Summary:
+
+- addition of Opportunity lifecycle definitions. Specifically
+    - addition of properties <{Opportunity/id}>, <{Opportunity/previousIds}>, <{Opportunity/specVersion}>, <{Opportunity/createdAt}>, <{Opportunity/status}>
+    - addition of chapter [[#opportunity-lifecycle]]
+
+
+## Version 0.0.1-20250128 (2025-01-28) ## {#version-0-0-1}
 
 Summary: Initial release of the specification.
 
@@ -1212,9 +1307,14 @@ been successfully performed, with the following properties:
 <pre class=biblio>
 {
     "OPENID-CONNECT": {
-    "authors": [],
-    "href": "https://openid.net/specs/openid-connect-discovery-1_0.html",
-    "title": "OpenID Connect Discovery 1.0 incorporating errata set 1"
-  }
+      "authors": [],
+      "href": "https://openid.net/specs/openid-connect-discovery-1_0.html",
+      "title": "OpenID Connect Discovery 1.0 incorporating errata set 1"
+    },
+    "rfc9562" : {
+      "authors": ["Davis, K.", "Peabody, B.", "Leach, P."],
+      "href": "https://www.rfc-editor.org/rfc/rfc9562.html",
+      "title": "Universally Unique IDentifiers (UUIDs)"
+    }
 }
 </pre>
