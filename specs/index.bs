@@ -344,7 +344,7 @@ The <{Opportunity}> data type has the following properties:
     2. Update the <{Opportunity}> with the closing date.
 
     Note:
-        Closing means does *not* imply the success in any way but that other parties should not consider the relating <{Opportunity}> (as identified by its <{Opportunity/id}>) for investment anymore.
+        Closing does *not* imply success in any way but rather that other parties should no longer consider the <{Opportunity}> (as identified by its <{Opportunity/id}>) for investment.
 
 Upon each change to <{Opportunity}> data (creation, update, or closing), the
 host system SHOULD provide the new version of the <{Opportunity}> to the [=data recipient=](s) through the IDX Protocol.
