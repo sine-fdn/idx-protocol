@@ -1,5 +1,5 @@
 <pre class='metadata'>
-Title: IDX Protocol (Version 0.0.1-20250128)
+Title: IDX Protocol (Version 0.0.1-20250219)
 Shortname: idx-protocol
 Status: LD
 Status Text: Draft Technical Specification
@@ -1001,7 +1001,7 @@ With response parameters
 
 # Appendix A: Changelog # {#changelog}
 
-## Version 0.0.1-20250218 (2025-02-18) ## {#version-0-0-1}
+## Version 0.0.1-20250219 (2025-02-19) ## {#version-0-0-1-20250219}
 
 Summary:
 
@@ -1010,7 +1010,7 @@ Summary:
     - addition of chapter [[#opportunity-lifecycle]]
 
 
-## Version 0.0.1-20250128 (2025-01-28) ## {#version-0-0-1}
+## Version 0.0.1-20250128 (2025-01-28) ## {#version-0-0-1-20250128}
 
 Summary: Initial release of the specification.
 
