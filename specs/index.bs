@@ -1232,7 +1232,7 @@ been successfully performed, with the following properties:
               The result of [[#tc-001|Test Case 001]] (`true` if successful, `false` otherwise).
 
       <tr>
-        <td>tc00w
+        <td>tc002
         <td>Boolean
         <td>M
         <td>
