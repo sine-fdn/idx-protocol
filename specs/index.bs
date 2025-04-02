@@ -3,7 +3,7 @@ Title: IDX Protocol (Version 0.0.1-20250219)
 Shortname: idx-protocol
 Status: LD
 Status Text: Draft Technical Specification
-ED: https://sine-fdn.github.io/idx-extension/
+ED: https://sine-fdn.github.io/idx-protocol/
 Canonical URL: ED
 Editor: Martin Pompéry, https://sine.foundation, martin@sine.foundation
 Editor: Raimundo Henriques, https://sine.foundation, raimundo@sine.foundation
