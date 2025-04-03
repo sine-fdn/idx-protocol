@@ -1,5 +1,5 @@
 <pre class='metadata'>
-Title: IDX Protocol (Version 0.0.1-20250403)
+Title: IDX Protocol (Version 0.1.0-20250403)
 Shortname: idx-protocol
 Status: LD
 Status Text: Draft Technical Specification
@@ -15,8 +15,6 @@ Local Boilerplate: header yes
 </pre>
 
 
-Advisement: This technical specification is a living document and is work in progress.
-
 # Introduction # {#introduction}
 
 This document defines the IDX Protocol ([[#protocol]]) and a data model ([[#data-model]])
@@ -24,12 +22,12 @@ to enable the seamless and interoperable exchange ([[#business-cases]]) of oppor
 
 It shall demonstrate that interoperability of impact investment data leads to more investments into SDG-related solutions.
 
+Advisement: This technical specification is a living document and is work in progress.
+
 
 ## Out of Scope ## {#out-of-scope}
 
-ISSUE: this section is still incomplete.
-
-This specification does not cover the following topics:
+The following topics and concerns are not within the scope of this specification:
 
 1. KYC- or AML-related topics.
 2. Legal or other regulatory aspects of impact investments.
@@ -59,9 +57,6 @@ This specification does not cover the following topics:
 
 : <dfn>AuthEndpoint</dfn>
 :: The endpoint to request an [=access token=] after discovering the value through AuthEndpoint Discovery ([[#auth-discovery]]).
-
-
-ISSUE: This sub-section to be completed.
 
 
 # Business Case and Rational # {#business-cases}
@@ -107,10 +102,6 @@ For this,
     2. call the [=Action OpportunityExchange=] to retrieve the <{Opportunity}> data;
     3. in case more than one <{Opportunity}> is returned, filter by, e.g., the name of the data
         owner.
-
-# End-to-End Example # {#example}
-
-ISSUE: Add an end-to-end example involving multiple parties
 
 
 # Data Model # {#data-model}
@@ -990,6 +981,15 @@ With response parameters
 </div>
 
 # Appendix A: Changelog # {#changelog}
+
+## Version 0.1.0-20250403 (2025-04-03) ## {#version-0-0-1-20250403}
+
+Summary:
+
+- bumped version number to 0.1.0
+- rewording of [[#appendix-b]]
+- several fixes and clean ups to stray definitions with no further reference
+
 
 ## Version 0.0.1-20250219 (2025-02-19) ## {#version-0-0-1-20250219}
 
