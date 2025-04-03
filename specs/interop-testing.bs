@@ -149,7 +149,7 @@ skipped.
 
 In case the recommended format cannot be used, the test outcome can be shared with the IDX team in any other format (such as a table).
 
-The test output should be sent through slack or to raimundo@sine.foundation.
+The test output should be sent through slack or to idx-interop-testing@sine.dev.
 
 # Pilot Demonstrator # {#pilot-demonstrator}
 
