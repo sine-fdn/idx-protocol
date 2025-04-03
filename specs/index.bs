@@ -1,5 +1,5 @@
 <pre class='metadata'>
-Title: IDX Protocol (Version 0.0.1-20250219)
+Title: IDX Protocol (Version 0.1.0-20250403)
 Shortname: idx-protocol
 Status: LD
 Status Text: Draft Technical Specification
@@ -15,8 +15,6 @@ Local Boilerplate: header yes
 </pre>
 
 
-Advisement: This technical specification is a living document and is work in progress.
-
 # Introduction # {#introduction}
 
 This document defines the IDX Protocol ([[#protocol]]) and a data model ([[#data-model]])
@@ -24,12 +22,12 @@ to enable the seamless and interoperable exchange ([[#business-cases]]) of oppor
 
 It shall demonstrate that interoperability of impact investment data leads to more investments into SDG-related solutions.
 
+Advisement: This technical specification is a living document and is work in progress.
+
 
 ## Out of Scope ## {#out-of-scope}
 
-ISSUE: this section is still incomplete.
-
-This specification does not cover the following topics:
+The following topics and concerns are not within the scope of this specification:
 
 1. KYC- or AML-related topics.
 2. Legal or other regulatory aspects of impact investments.
@@ -60,19 +58,6 @@ This specification does not cover the following topics:
 : <dfn>AuthEndpoint</dfn>
 :: The endpoint to request an [=access token=] after discovering the value through AuthEndpoint Discovery ([[#auth-discovery]]).
 
-: <dfn>IDX Conformance</dfn>
-:: The status of being conformant to these specifications. A [=host system=] is
-    considered <dfn>IDX Conformant</dfn> if it meets the requirements specified in
-    [[#requirements]] and has successfully performed [=bilateral test|bilateral=]
-    [[#conformance-testing|conformance tests]].
-
-:<dfn>Bilateral Test</dfn>
-:: A testing process where two [=host systems=] test their implementations against each other to
-    ensure [=interoperable|interoperability=].
-
-
-ISSUE: This sub-section to be completed.
-
 
 # Business Case and Rational # {#business-cases}
 
@@ -92,7 +77,7 @@ The interoperability enabled by the IDX Protocol supports to
 
 Note: Non-normative section
 
-A <dfn>data transaction</dfn> is an abstraction for the exchange of data ([[#data-model]]) between two [=parties=], serving one or more business cases ([[#business-cases]]).
+A data transaction is an abstraction for the exchange of data ([[#data-model]]) between two [=parties=], serving one or more business cases ([[#business-cases]]).
 
 Each transaction shall illustrate how the IDX Protocol can be utilized to address the described business cases.
 
@@ -118,14 +103,10 @@ For this,
     3. in case more than one <{Opportunity}> is returned, filter by, e.g., the name of the data
         owner.
 
-# End-to-End Example # {#example}
-
-ISSUE: Add an end-to-end example involving multiple parties
-
 
 # Data Model # {#data-model}
 
-The <dfn>IDX Data Model</dfn> consists of the data type <{Opportunity}> at this point.
+The IDX Data Model consists of the data type <{Opportunity}> at this point.
 
 ## Opportunity ## {#dt-opportunity}
 
@@ -663,7 +644,7 @@ The <{SustainableFarmingPractices}> data type has the following properties:
   <figcaption>SustainableFarmingPractices data type properties</figcaption>
 </figure>
 
-# <dfn>IDX Protocol</dfn> # {#protocol}
+# IDX Protocol # {#protocol}
 
 This section defines an [[!rfc9112|HTTP]]-based API for the [=interoperable=] exchange of
 <{Opportunity}> data between [=host systems=].
@@ -862,7 +843,7 @@ With response parameters
 ::
     If the host system accepts the [=BearerToken=], the body MUST be a JSON object with property `data` with value a JSON array of <{Opportunity|Opportunities}>.
 
-    Otherwise, the host system MUST return an <dfn>error response</dfn> JSON object with the following properties:
+    Otherwise, the host system MUST return an error response JSON object with the following properties:
     - `code`: the error response code (corresponding to the [=StatusCode=]) encoded as a String;
     - `message`: a human-readable error description encoded as a String.
 
@@ -1001,6 +982,15 @@ With response parameters
 
 # Appendix A: Changelog # {#changelog}
 
+## Version 0.1.0-20250403 (2025-04-03) ## {#version-0-0-1-20250403}
+
+Summary:
+
+- bumped version number to 0.1.0
+- rewording of [[#appendix-b]]
+- several fixes and clean ups to stray definitions with no further reference
+
+
 ## Version 0.0.1-20250219 (2025-02-19) ## {#version-0-0-1-20250219}
 
 Summary:
@@ -1015,18 +1005,55 @@ Summary:
 Summary: Initial release of the specification.
 
 
-# Appendix B: Conformance Testing # {#conformance-testing}
+# Appendix B: Conformance Testing # {#appendix-b}
 
 Advisement: This appendix is a work in progress. All feedback is welcome.
 
-In order to be considered [=IDX Conformant=], a [=host system=] MUST perform successful a
-[=bilateral tests=] with another host system.
 
-These tests are effectively two test suites, one for each host system, that may be run in parallel.
+<dfn>Conformance Testing</dfn> is an interoperabilty testing process, performed by executing and passing test cases ([[#test-matrix]]).
 
-The host system acting as [=data owner=] will be referred to as 'target host system'.
+The goal of this process is to assess the interoperability between [=host systems=], and to which extend an individual host system implements this specification.
 
-The host system acting as [=data recipient=] will be referred to as 'testing host system'.
+The process is structured by a set of test cases ([[#test-cases]]), with categories [=Mandatory Tests=] and [=Recommended Tests=] (also see [[#test-matrix]]).
+
+Within the process, host systems have different roles:
+  1. the [=host system=] executing tests, which in this role is called the <dfn>tester host system</dfn>,
+  2. the [=host system=] under test, which in this role is called the <dfn>target host system</dfn>.
+
+A [=target host system=] has successfully passed the [=Conformance Testing=] if it passed all [=Mandatory Tests=].
+
+Note:
+  It is recommended to perform the [=Conformance Testing=] process as a bilateral testing process, wherein two parties mutually test
+  each other's [=host systems=] as a [=target host system=] and a [=tester host system=]:
+
+Note: It is RECOMMENDED for the parties to also test and document the results from running [=Recommended Tests=].
+
+
+## Test Matrix ## {#test-matrix}
+
+<figure id="pilot-testing-test-matrix-table">
+  <table class="data">
+    <thead>
+      <tr>
+        <th>Categorization
+        <th>Tests
+    <tbody>
+      <tr>
+        <td><dfn>Mandatory Tests</dfn>
+        <td>
+            [[#tc-001]]<br/>[[#tc-002]]<br/>[[#tc-005]]
+
+      <tr>
+        <td><dfn>Recommended Tests</dfn>
+        <td>
+            [[#tc-003]]<br/>[[#tc-004]]<br/>[[#tc-006]]<br/>
+            [[#tc-007]]<br/>[[#tc-008]]<br/>[[#tc-009]]<br/>
+            [[#tc-010]]
+
+  </table>
+  <figcaption>Pilot Testing Test Matrix</figcaption>
+</figure>
+
 
 ## Test Cases ## {#test-cases}
 
@@ -1196,113 +1223,10 @@ The target host system MUST respond with an error response, as specified in
 SHOULD be `BadRequest`. The `message` property CAN be any human-readable error message (e.g.,
 "Malformed request").
 
-## Test Output ## {#test-output}
+## Test Result Communications ## {#test-output}
 
-In order to ascertain the success of the tests, a JSON SHOULD be created after bilateral testing has
-been successfully performed, with the following properties:
+It is recommended to send the [=conformance testing=] results to [idx-interop-testing@sine.dev](mailto:idx-interop-testing@sine.dev).
 
-<figure id="test-output-table" dfn-type="element-attr" dfn-for="TestOutput">
-  <table class="data">
-    <thead>
-      <tr>
-        <th>Property
-        <th>Type
-        <th>Req
-        <th>Specification
-    <tbody>
-      <tr>
-        <td>targetHostSystem
-        <td>String
-        <td>M
-        <td>
-              The name of the target host system (i.e., the host system acting as [=data owner=]).
-
-      <tr>
-        <td>testerHostSystem
-        <td>String
-        <td>M
-        <td>
-              The name of the testing host system (i.e., the host system acting as [=data recipient=]).
-
-      <tr>
-        <td>tc001
-        <td>Boolean
-        <td>M
-        <td>
-              The result of [[#tc-001|Test Case 001]] (`true` if successful, `false` otherwise).
-
-      <tr>
-        <td>tc002
-        <td>Boolean
-        <td>M
-        <td>
-              The result of [[#tc-002|Test Case 002]] (`true` if successful, `false` otherwise).
-
-      <tr>
-        <td>tc003
-        <td>Boolean
-        <td>M
-        <td>
-              The result of [[#tc-003|Test Case 003]] (`true` if successful, `false` otherwise).
-
-      <tr>
-        <td>tc004
-        <td>Boolean
-        <td>M
-        <td>
-              The result of [[#tc-004|Test Case 004]] (`true` if successful, `false` otherwise).
-
-      <tr>
-        <td>tc005
-        <td>Boolean
-        <td>M
-        <td>
-              The result of [[#tc-005|Test Case 005]] (`true` if successful, `false` otherwise).
-
-      <tr>
-        <td>tc006
-        <td>Boolean
-        <td>M
-        <td>
-              The result of [[#tc-006|Test Case 006]] (`true` if successful, `false` otherwise).
-
-      <tr>
-        <td>tc007
-        <td>Boolean
-        <td>M
-        <td>
-              The result of [[#tc-007|Test Case 007]] (`true` if successful, `false` otherwise).
-
-      <tr>
-        <td>tc008
-        <td>Boolean
-        <td>M
-        <td>
-              The result of [[#tc-008|Test Case 008]] (`true` if successful, `false` otherwise).
-
-      <tr>
-        <td>tc009
-        <td>Boolean
-        <td>M
-        <td>
-              The result of [[#tc-009|Test Case 009]] (`true` if successful, `false` otherwise).
-
-      <tr>
-        <td>tc010
-        <td>Boolean
-        <td>M
-        <td>
-              The result of [[#tc-010|Test Case 010]] (`true` if successful, `false` otherwise).
-
-      <tr>
-        <td>comments
-        <td>String
-        <td>O
-        <td>
-              Additional comments on the bilateral test, e.g., description of additional tests performed.
-  </table>
-  <figcaption>Test Output</figcaption>
-</figure>
 
 <pre class=biblio>
 {
