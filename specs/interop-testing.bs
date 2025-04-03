@@ -2,15 +2,13 @@
 Title: IDX Interoperability Testing Guidance
 Shortname: idx-interop-testing
 Status: LD
-ED: https://sine-fdn.github.io/interop-tesing.html
+ED: https://sine-fdn.github.io/interop-testing.html
 Canonical URL: ED
-Editor: Martin Pompéry, https://sine.foundation, martin@sine.foundation
 Editor: Raimundo Henriques, https://sine.foundation, raimundo@sine.foundation
 Repository: sine-fdn/idx-protocol
-Abstract: This document provides guidance on interoperability testing the [IDX protocol](./index.html).
+Abstract: Guidance for interoperability testing in the [IDX protocol](./index.html) context
 Markup Shorthands: markdown yes
 Boilerplate: omit conformance, omit copyright
-Local Boilerplate: header yes
 </pre>
 
 # About # {#about}
@@ -20,7 +18,7 @@ This document defines a [=Pilot Testing=] process to test a [=Target host system
 # Definitions # {#definitions}
 
 : <dfn>Host System</dfn>
-:: Software implementation conforming to the IDX protocol
+:: Any software implementation conforming to the IDX protocol
 
 : <dfn>Target Host System</dfn>
 :: The [=host system=] being tested
@@ -29,12 +27,12 @@ This document defines a [=Pilot Testing=] process to test a [=Target host system
 :: The [=host system=] performing the tests
 
 : <dfn data-noexport>Bilateral Testing</dfn>
-:: The process through which two host systems mutually test their [=Interoperable|interoperability=]
+:: The execution of the interoperability testing process defined through this document by two systems, with each system taking the role of a [=Target Host system=] and a [=Tester Host system=] 
 
 : <dfn>Interoperable</dfn>
-:: The quality of being able to exchange data between host systems irrespective of the vendors of the host systems, without the need for translation or transformation of the data
+     Note: the goal of bilateral testing is to assert the interoperability between 2 independent implementations of the IDX Protocol.
 
-# Introduction # {#goals}
+# Introduction # {#introduction}
 
 Generally, interoperability testing is performed to verify the interoperability of independent implementations ([=host systems=]).
 
@@ -46,7 +44,7 @@ Note: It is RECOMMENDED to perform the Pilot Testing process as a [=bilateral te
 
 Note: It is RECOMMENDED for the parties to also test and document the results of the optional tests defined in [[#recommended-tests]].
 
-## Bilateral Testing Process  ## {#steps}
+## Bilateral Testing Process  ## {#bilateral-testing-process}
 
 Pilot testing SHOULD be a [=bilateral testing=] process by executing the following steps:
 
