@@ -15,7 +15,7 @@ Local Boilerplate: header yes
 
 # About # {#about}
 
-This document details the  steps to be taken during interoperability testing between two host systems implementing the [IDX protocol](./index.html).
+This document defines a [=Pilot Testing=] process to test a [=Target host system=] against the [[!IDX]] Protocol. By passing the tests defined in [[#mandatory-tests]], a system is defined as passing the pilot testing.
 
 # Definitions # {#definitions}
 
@@ -34,35 +34,21 @@ This document details the  steps to be taken during interoperability testing bet
 : <dfn>Interoperable</dfn>
 :: The quality of being able to exchange data between host systems irrespective of the vendors of the host systems, without the need for translation or transformation of the data
 
-: <dfn data-noexport>Pilot Testing</dfn>
-:: The first and most preliminary set of interoperability tests, less demanding than tests to be pursued in the near future, with the goal of adapting the technical specifications if need be
+# Introduction # {#goals}
 
-# Goals # {#goals}
+Generally, interoperability testing is performed to verify the interoperability of independent implementations ([=host systems=]).
 
-The main goal of interoperability testing is two ensure that two host systems meet the minimum
-requirements and are interoperable (see [[#pilot-testing-proc]]).
+Within the scope of this document, <dfn>Pilot Testing</dfn> is an interoperabilty testing process, performed by executing and passing the tests further defined in [[#mandatory-tests]].
 
-# Pilot Testing Process # {#pilot-testing-proc}
+A host system, acting as a [=target host system=], has successfully passed the [=pilot testing=] if it passed all mandatory tests ([[#mandatory-tests]]).
 
-During pilot testing, two host systems shall exchange **mock data**. The goal is to ensure that the
-two systems can exchange data according to the protocol and that such data is syntactically correct.
+Note: It is RECOMMENDED to perform the Pilot Testing process as a [=bilateral testing=] process between two independent parties and implementations.
 
-Pilot testing shall allow for more flexibility with regard to the features specified in the IDX
-protocol than tests to be pursued in the future.
+Note: It is RECOMMENDED for the parties to also test and document the results of the optional tests defined in [[#recommended-tests]].
 
-Accordingly, the [test cases](./index.html#test-cases) specified in Appendix B of the IDX protocol
-tech specs will be divided into [[#mandatory-tests]] and [[#recommended-tests]].
+## Bilateral Testing Process  ## {#steps}
 
-Note: **All tests should be performed**, regardless of the host system's maturity. Learning how the
-existing implementations respond to these specific requests will allow us to further refine the
-technical specifications.
-
-If all mandatory tests are passed, interoperability testing can continue and host systems can be
-iteratively improved. If not, they need to be adapted and the tests repeated.
-
-## Steps ## {#steps}
-
-Pilot testing is bilateral and should be performed by following these steps:
+Pilot testing SHOULD be a [=bilateral testing=] process by executing the following steps:
 
 **Phase 1**
 
@@ -167,3 +153,14 @@ The test cases and testing process (although this time unilateral) used for pilo
 Further feedback is, however, necessary, including the inputs of Upendo and iGravity.
 
 Details about this feedback are still TBD.
+
+
+<pre class=biblio>
+{
+    "IDX": {
+      "authors": [ "Pompery, M.", "Henriques, R." ],
+      "href": "https://sine-fdn.github.io/idx-protocol/",
+      "title": "IDX Protocol"
+    }
+}
+</pre>
