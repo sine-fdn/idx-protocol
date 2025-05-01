@@ -10,8 +10,8 @@ Editor: Raimundo Henriques, https://sine.foundation, raimundo@sine.foundation
 Repository: sine-fdn/idx-protocol
 Abstract: This specification defines the IDX Protocol, a technical specification for reaching interoperability in the impact investments space.
 Markup Shorthands: markdown yes
-Boilerplate: omit conformance, omit copyright
-Local Boilerplate: header yes
+Boilerplate: omit conformance
+Local Boilerplate: copyright yes
 </pre>
 
 
